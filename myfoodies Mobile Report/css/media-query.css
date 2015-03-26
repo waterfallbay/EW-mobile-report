@@ -1,0 +1,49 @@
+@media (min-width: 0) {
+  .navbar-toggle {
+    display: block; /* force showing the toggle */
+  }
+}
+
+@media (min-width: 992px) {
+body { padding:0;}
+.navbar{ right:auto; width:100%; min-height:56px;}
+.navbar-toggle{ margin-top:4px;}
+.navbar-toggle img{ max-width:15px;}
+header ul.head-link{ margin-left:45px;}
+header ul.head-link li a{ font-size:30px;}
+header ul.head-link li a figure{ max-width:30px; margin:6px 0;}
+header ul.head-link li a figure.sm{ max-width:20px;}
+
+}
+@media (max-width: 992px) {
+header ul.head-link li a{ font-size:20px;}
+.navbar{ min-height:45px;}
+}
+@media(max-width:768px) {
+.f-logo{ right:20px;}
+.navbar{ min-height:54px;}
+.navbar-toggle{ margin-left:10px;}
+.navbar-toggle img{ max-width:15px;}
+header ul.head-link{ margin-left:60px;}
+header ul.head-link li a{ font-size:26px;}
+header ul.head-link li a figure{ max-width:30px; margin:4px 0;}
+header ul.head-link li a figure.sm{ max-width:20px;}
+}
+@media(max-width:767px){
+.navbar{ min-height:45px;}
+.navbar-toggle{ margin-left:0px;}
+.navbar-toggle img{ max-width:10px;}
+header ul.head-link{ margin-left:35px;}
+header ul.head-link li{ margin-right:10px;}
+header ul.head-link li a{ font-size:20px;}
+header ul.head-link li a figure{ max-width:20px; margin:4px 0;}
+header ul.head-link li a figure.sm{ max-width:14px;}
+.navmenu-default .navmenu-nav>li>a, .navbar-default .navbar-offcanvas .navmenu-nav>li>a{ color:#fff; font-size:16px;}
+
+}
+@media(max-width:480px){
+.container{ height:auto;}
+.login input[type='submit']{ margin:0;}
+.login .error{ margin-bottom:20px;}
+.graph-data>tbody>tr>td, .graph-data>tbody>tr>td span, .graph-data>tbody>tr>td span.large{ font-size:20px; padding:5px;}
+}
