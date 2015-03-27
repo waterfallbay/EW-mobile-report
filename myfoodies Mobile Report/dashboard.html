@@ -20,7 +20,9 @@
     <script src="js/jasny-bootstrap.min.js"></script>
     <script src="js/jquery.formatCurrency-1.4.0.min.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
     <script src="js/main.js"></script>
+    <script src="lang/lang.js"></script>
     
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -40,19 +42,17 @@
 	<div class="navmenu navmenu-default navmenu-fixed-left offcanvas">
       <!--<a class="navmenu-brand" href="#">Project name</a>-->
       <ul class="nav navmenu-nav" id="navbarcontent">
-        <li><a href="#">總銷售報表</a></li>
-        <li><a href="dashboard2.html">取消項目報表</a></li>
-        <li><a href="#">分單報表</a></li>
-        <li><a href="#">轉檯報表</a></li>
-        <li><a href="#">追單報表</a></li>
-        <li><a href="#">賬單列表</a></li>
-        <li><a href="#">鎖貨報表</a></li>
-        <li><a href="#">折扣報表</a></li>
-        <li><a href="#">每小時報表</a></li>
-        <li><a href="#">取消項目報表</a></li>
-        <li><a href="#">營業報表</a></li>
-        <li><a href="#">項目分類報表</a></li>
-        <li><a href="#">收銀員報表</a></li>
+        <li><a href="#" id="menu1"></a></li>
+        <li><a href="dashboard2.html" id="menu2"></a></li>
+        <li><a href="#" id="menu3"></a></li>
+        <li><a href="#" id="menu4"></a></li>
+        <li><a href="#" id="menu5"></a></li>
+        <li><a href="#" id="menu6"></a></li>
+        <li><a href="#" id="menu7"></a></li>
+        <li><a href="#" id="menu8"></a></li>
+        <li><a href="#" id="menu9"></a></li>
+        <li><a href="#" id="menu10"></a></li>
+        <li><a href="#" id="menu11"></a></li>
       </ul>
     </div>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -63,7 +63,7 @@
     <div class="navbar-top">
     <ul class="head-link">
     <li><a href="#"><figure><img src="images/icon-book.png" alt="" class="img-responsive"></figure></a></li>
-    <li><a href="#">總銷售報表</a></li>
+    <li><a href="#" id="menuheader1"></a></li>
     </ul>
     <ul class="head-link head-link-right" id="buttonul">
     <li><a href="#" id="toggle-list-view"><figure class="sm"><img src="images/icon-align.png" alt="" class="img-responsive"></figure></a></li>
@@ -71,14 +71,14 @@
     <li><a href="#" data-toggle="modal" data-target="#calendar"><figure><img src="images/icon-calendar.png" alt="" class="img-responsive"></figure></a></li>
     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><figure><img src="images/icon-setting.png" alt="" class="img-responsive"></figure></a>
         <ul class="dropdown-menu" role="menu">
-        <li><a href="#">選擇餐廳</a></li>
-        <li><a href="#">轉換語言</a></li>
-        <li><a href="#">登出</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#restaurantlist" id="selectRestaurant"></a></li>
+        <li><a href="#" id="changelang"></a></li>
+        <li><a href="#" id="logout"></a></li>
         </ul>
     </li>
     </ul>
     <!--calendar modalbox starts-->
-    <div class="modal fade" id="calendar" tabindex="-1" role="dialog" aria-labelledby="calendar" aria-hidden="true">
+<div class="modal fade" id="calendar" tabindex="-1" role="dialog" aria-labelledby="calendar" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
@@ -94,13 +94,26 @@
   </div>
 </div>
     <!--calendar modalbox ends-->
+    <!--restaurantlist modalbox starts-->
+    <div class="modal fade" id="restaurantlist" tabindex="-1" role="dialog" aria-labelledby="restaurantlist" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ul class="lists" id="restaurantlistul">
+        </ul>
+      </div>
     </div>
+  </div>
+</div>
+    <!--restaurantlist modalbox ends-->
+</div>
 </header><!--header ends-->
     <!-- section chartview start -->
 <section class="wrapper" id="chart-view-section">
 	<div class="container">
     	<h1 id="selectedworkday">&nbsp;</h1>
         <h1 class="title" id="shopName">&nbsp;</h1>
+        <h4 id="texttitle1"></h4>
         <div class="clearfix"></div>
         <!-- start chart -->
         <div class="chart-wrapper">
@@ -125,7 +138,7 @@
 	<div class="container">
     	<h1 id="selectedworkday2">&nbsp;</h1>
         <h1 class="title" id="shopName2">&nbsp;</h1>
-        <h4>一日營業總結</h4>
+        <h4 id="texttitle2"></h4>
         <div class="clearfix"></div>
         <div class="table-responsive">
         	<table id="mydataTable" class="table table-condensed" style="width:100%">
@@ -158,9 +171,17 @@ $( "#toggle-chart-view" ).click(function( event ) {
   $( "#toggle-list-view" ).show();
 });
     
+var firsttimeenter;
+var newshopid;
+    
 $( document ).ready(function() {
     
+    getLangText("zh");
+    
     var thisShopId;
+    var currenthtmlfile;
+    
+    currenthtmlfile = document.location.pathname.match(/[^\/]+$/)[0];
     
     $( "#list-view-section" ).hide();
     $( "#toggle-chart-view" ).hide();
@@ -175,11 +196,35 @@ $( document ).ready(function() {
       },
       crossDomain: true,
       success: function(data){
-           //alert(data[0].Name);
-	    $('#shopName').text(data[0].Name);
-        $('#shopName2').text(data[0].Name);
-        console.log(data);
-        thisShopId = data[0].ShopId;
+        //alert(data[0].Name);
+
+        console.log ("cookies: "+ $.cookie('shopId'));
+        if ($.cookie('shopId') === undefined){
+            $.cookie('shopId', thisShopId, {expires:7, path:'/'});
+            thisShopId = data[0].ShopId;
+            $('#shopName').text(data[0].Name);
+            $('#shopName2').text(data[0].Name);
+            console.log("thisShopID no cookies: "+thisShopId);
+        }
+        else{
+            thisShopId = $.cookie('shopId');
+           
+            $.each(data, function(i, item){
+                if (data[i].ShopId == thisShopId){
+                    $('#shopName').text(data[i].Name);
+                    $('#shopName2').text(data[i].Name);
+                }
+            });
+            
+            console.log("thisShopID with cookies: "+thisShopId);
+        }
+        
+        
+        $.each(data, function(i, item){
+            newPath = currenthtmlfile+"?newshopid="+data[i].ShopId;
+            $("#restaurantlistul").append('<li><a href="#" onclick="writeNewShopIDCookie('+data[i].ShopId+')">'+data[i].Name+'</a></li>');
+        });
+            
       },
       error: function (xhr) {
              alert(xhr.responseText);
@@ -207,24 +252,26 @@ $( document ).ready(function() {
     var finalcheckindatetimeminute;
     var finalcheckoutdatetimeminute;
     
+    
     $.ajax(
-    { 
+    {
       type: "GET",
-      url: "http://everyware.cloudapp.net/Report/AllTransactionsRest?shop="+thisShopId,
+      url: "http://everyware.cloudapp.net/Report/AllTransactionsRest?shop="+getCurrentShopID(),
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
       },
       crossDomain: true,
       success: function(data){
-          
+          console.log("final ajax shopID: "+thisShopId);
+          //update bottom table on dashboard
           maxMoney = parseInt(data.SelectedTxSalesHeaderList[data.SelectedTxSalesHeaderList.length-1].TotalAmountRunningSum+500);
           
           selectedworkdayDay = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getDate();
           selectedworkdayMonth = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getMonth();
           selectedworkdayYear = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getFullYear();
           
-          selectedworkdaystr = selectedworkdayYear+"年"+jsMonthtoNumbermonth(selectedworkdayMonth)+"月"+selectedworkdayDay+"日";
+          selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
           $("#selectedworkday").text(selectedworkdaystr);
           $("#selectedworkday2").text(selectedworkdaystr);
           
@@ -273,12 +320,12 @@ $( document ).ready(function() {
           $('#mydataTable').dataTable({
              "data": tableArr,
              "columns": [
-                { "title": "單據編號" },
-                { "title": "檯號" },
-                { "title": "入座時間" },
-                { "title": "結賬時間" },
-                { "title": "金額"},
-                { "title": "結賬員工"}
+                { "title": invoiceno },
+                { "title": tableno },
+                { "title": intime },
+                { "title": outtime },
+                { "title": ttamount},
+                { "title": cashierstaff}
                 ],
               "paging": false,
               "bFilter": false,
@@ -301,7 +348,7 @@ $( document ).ready(function() {
     $.fn.extend({
         printAmountTable: function(thisumamount, timesectiondata) {
             
-            $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="total-wholeday">全日</span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
+            $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="total-wholeday">'+whodaytext+'</span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
             //$("#amount-table tr:last").after('<tr><td><span class="large" id="total-wholeday">全日</span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
   
             $("#WholeDaySum").text(thisumamount).formatCurrency();
@@ -318,9 +365,6 @@ $( document ).ready(function() {
     
 function createChart(moneyArr , timeArr , maxMoney) {
             $("#chart").kendoChart({
-                title: {
-                    text: "一日營業總結"
-                },
                 legend: {
                     visible: false
                 },
@@ -384,6 +428,19 @@ function jsMonthtoNumbermonth(num){
     realnummonth = month[num];
     
     return realnummonth; 
+}
+
+function writeNewShopIDCookie(ShopID){
+    $.cookie('shopId', ShopID, {expires:7, path:'/'});
+    console.log("cookie is chaing to: " + $.cookie('shopId'));
+    window.location.replace("dashboard.html");
+}
+
+function getCurrentShopID()
+{
+    currentShopID = $.cookie('shopId');
+    
+    return currentShopID;
 }
 </script>
 </body>
