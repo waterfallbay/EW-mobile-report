@@ -19,7 +19,7 @@ var zh = {
     intime: "入座",
     outtime: "結賬",
     ttamount: "金額",
-    cashierstaff: "結賬員工",
+    cashierstaff: "員工",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
