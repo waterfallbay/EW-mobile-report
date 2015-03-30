@@ -14,6 +14,8 @@
     <script src="js/bootstrap.min.js"></script> 
     <script src="js/jasny-bootstrap.min.js"></script> 
     <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/main.js"></script>
     <script src="lang/lang.js"></script>
     
@@ -32,7 +34,7 @@
 </head>
 <body class="login-page">
 <section class="container">
-	<a class="language" href="#" id="languagebar"></a>
+	<a class="language" href="#" id="languagebar" onclick="setlang($.cookie('lang'))"></a>
     <h1 class="logo"><a href="#"><img src="images/logo2.png" alt="" class="img-responsive"></a><span id="mobilereport"></span></h1>
     <div class="row">
     	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
@@ -44,8 +46,8 @@
                 	<input class="form-control" type="password" name="Password"  value="sanlung8888" placeholder="" id="loginpassword">
                 </div>
                 <div class="form-group form-check">
-                	<input id="check" type="checkbox" >
-                    <label for="check" id="rememberme"></label>
+                	<input id="remembermecheck" type="checkbox" >
+                    <label for="remembermecheck" id="rememberme" class="rememberme"></label>
                 </div>
                 <div class="clearfix"></div>
                 <div class="form-group">
@@ -60,34 +62,58 @@
     <span class="f-logo"><img src="images/everyware.png" alt="" class="img-responsive"></span>
 </section>
 <script>
+
 $(document).ready(function(){
-    getLangText("zh");
+
+      $('#loginusername').attr("value" , getUserNameFromCookies());
+      
+      if($.cookie('rememberme') === "yes") {
+          $('#remembermecheck').attr('checked', true);
+      }
+      else{
+          $('#remembermecheck').attr('checked', false);
+      }
+
+    if ($.cookie('lang') === undefined){
+        $.cookie('lang', 'zh', {expires:365, path:'/'});
+        getLangText($.cookie('lang'));
+    }else{
+        getLangText($.cookie('lang'));
+    }
 });  
     
     
 jQuery(document).submit(function(e){
 	var msg = "login error: error message";
     var form = $(e.target);
-    if(form.is("#loginform")){ // check if this is the form that you want (delete this check to apply this to all forms)
+    if(form.is("#loginform")){
         e.preventDefault();
         $.ajax({
             type: "GET",
 			crossDomain: true,
             url: form.attr("action"), 
-            data: form.serialize(), // serializes the form's elements.
+            data: form.serialize(), 
 			dataType: 'jsonp',
 			xhrFields: {
 				withCredentials: true
 			},
 			
             success: function(data, status, xhr) {
-				$(self).html('your data goes here');
-                console.log(data); // show response from the php script. (use the developer toolbar console, firefox firebug or chrome inspector console)			
 
 				if (data.IsError == false){
 					$("#errortext").html("&nbsp;");
-					
-					//alert(xhr.getResponseHeader('Set-Cookie'));
+		
+                    //check remember me is checked, if yes write cookies for rememberme, username and password
+                    if($('#remembermecheck').prop('checked')){
+                        $.cookie('rememberme', "yes" , {expires:365, path:'/'});
+                        $.cookie('username', $("#loginusername").val() , {expires:365, path:'/'});
+                        
+                    }
+                    else{
+                        forgeteverything();
+                    }
+                    
+					//redirect window
 					window.location.replace("dashboard.html");
 				}
 				else{
@@ -96,6 +122,16 @@ jQuery(document).submit(function(e){
             },
         });
     }
+    
+    //decide language
+    if ($.cookie('lang') === undefined){
+        $.cookie('lang', "zh" , {expires:365, path:'/'});
+        getLangText($.cookie('lang'));
+    }
+    else{
+        getLangText($.cookie('lang'));
+    }
+    
 });
 </script>
 </body>

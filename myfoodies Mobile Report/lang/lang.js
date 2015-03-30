@@ -1,9 +1,9 @@
 var zh = {
     texttitle1 : "一日營業總結",
-    selectRestaurant : "選擇餐廳",
-    changelang : "轉換語言",
+    selectRestaurant : "選擇分店",
+    changelang : "English",
     logout : "登出",
-    remembernme : "記住我",
+    remembernme : "記住用戶名稱",
     mobilereport : "流動報表",
     username : "用戶名稱",
     password : "密碼",
@@ -20,6 +20,11 @@ var zh = {
     outtime: "結賬",
     ttamount: "金額",
     cashierstaff: "員工",
+    todaytext: "今天",
+    yesterdaytext: "昨天",
+    dayb4yesterdaytext: "前天",
+    customedatetext: "自訂日期",
+    pleaseselectdate: "請選擇日期",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -36,7 +41,50 @@ var zh = {
     }
 };
 
-var en = {};
+var en = {
+    texttitle1 : "All Day Sales",
+    selectRestaurant : "Select Store",
+    changelang : "中文",
+    logout : "Logout",
+    remembernme : "Save Username",
+    mobilereport : "Mobile Report",
+    username : "Username",
+    password : "Password",
+    loginerror: "Login failed: Invalid Username or Password!",
+    languagebar : "中文",
+    loginnow : "Login",
+    year : "-",
+    month : "-",
+    day: "",
+    wholeday: "All Day",
+    invoiceno: "No.",
+    tableno: "Table",
+    intime: "In",
+    outtime: "Out",
+    ttamount: "Amt.",
+    cashierstaff: "Staff.",
+    todaytext: "Today",
+    yesterdaytext: "Yesterday",
+    dayb4yesterdaytext: "Day Before",
+    customedatetext: "Custom Date",
+    pleaseselectdate: "Select a Date",
+    menu : {
+        AllTransactions : "All Day Sales",
+        CancelItems : "Cancelled Item Log",
+        SplitSales : "Split Table Log",
+        ChangeTable : "Change Table Log",
+        ChaseItem : "Chase Order Log",
+        ReportSalesHeaderList : "Transaction List",
+        ReportSalesItemList : "Sales by Item",
+        ReportDiscountSales : "Bill Discount Log",
+        ReportHourlySales : "Hourly Sales",
+        ReportSales : "Summary",
+        CashierReport : "Cashier Log",
+        menuheader1 : "All Day Sales"
+    }
+    
+};
+
 var currentlang;
 var loginerror;
 var yeartext;
@@ -53,13 +101,13 @@ var cashierstaff;
 function getLangText(lang){
 
     currentlang = decidecurrentlang(lang);
-    
+    console.log ("current lang"+lang);
     //dashboard page
     
     $('#menu1').html(currentlang.menu.AllTransactions);
     $('#menu2').html(currentlang.menu.CancelItems);
     $('#menu3').html(currentlang.menu.SplitSales);
-    $('#menu4').html(currentlang.menu.SplitSales);
+    $('#menu4').html(currentlang.menu.ChangeTable);
     $('#menu5').html(currentlang.menu.ChaseItem);
     $('#menu6').html(currentlang.menu.ReportSalesHeaderList);
     $('#menu7').html(currentlang.menu.ReportSalesItemList);
@@ -73,7 +121,12 @@ function getLangText(lang){
     $('#selectRestaurant').html(currentlang.selectRestaurant);
     $('#changelang').html(currentlang.changelang);
     $('#logout').html(currentlang.logout);
-    
+    $('#todaytext').html(currentlang.todaytext);
+    $('#yesterdaytext').html(currentlang.yesterdaytext);
+    $('#dayb4yesterdaytext').html(currentlang.dayb4yesterdaytext);
+    $('#customedatetext').html(currentlang.customedatetext);
+    $('#pleaseselectdate').html(currentlang.pleaseselectdate);
+
     //login page
     $('#languagebar').html(currentlang.languagebar);
     $('#mobilereport').html(currentlang.mobilereport);
@@ -96,16 +149,36 @@ function getLangText(lang){
 
 function decidecurrentlang(lang)
 {
-    if(lang=="en")
-        {
-            currentlang = en;
-        }
-    else if(lang=="zh"){
+    if(lang==="en")
+    {
+        currentlang = en;
+        kendo.culture("en-US");
+    }
+    else if(lang==="zh"){
         currentlang = zh;
+        kendo.culture("zh-HK");
     }
     else{
          currentlang = zh;
+         kendo.culture("zh-HK");
+    }
+        
+    return currentlang;
+}
+
+function setlang(lang)
+{
+    var page = document.location.pathname.match(/[^\/]+$/)[0];
+    
+    if (lang === "zh"){
+        $.cookie('lang', "en" , {expires:365, path:'/'});
+    }
+    else if(lang === "en"){
+        $.cookie('lang', "zh" , {expires:365, path:'/'});
+    }
+    else{
+        $.cookie('lang', "zh" , {expires:365, path:'/'});
     }
     
-    return currentlang;
+    window.location.replace(getCurrentHTMLFile());
 }

@@ -6,13 +6,17 @@
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="kendo/styles/kendo.common.min.css" />
     <link rel="stylesheet" href="kendo/styles/kendo.default.min.css" />
+    
     <link rel="stylesheet" href="kendo/styles/kendo.dataviz.min.css" />
     <link rel="stylesheet" href="kendo/styles/kendo.dataviz.default.min.css" />
 
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.all.min.js"></script>
+    <script src="kendo/js/kendo.culture.zh-HK.min.js"></script>
+    <script src="kendo/js/kendo.messages.zh-HK.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
+    
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
     <!-- Include all compiled plugins (below), or include individual files as needed --> 
@@ -21,6 +25,7 @@
     <script src="js/jquery.formatCurrency-1.4.0.min.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/jquery.cookie.js"></script>
+    <script src="js/util.js"></script>
     <script src="js/main.js"></script>
     <script src="lang/lang.js"></script>
     
@@ -43,15 +48,15 @@
       <!--<a class="navmenu-brand" href="#">Project name</a>-->
       <ul class="nav navmenu-nav" id="navbarcontent">
         <li><a href="#" id="menu1"></a></li>
+        <li><a href="#" id="menu8"></a></li>
+        <li><a href="#" id="menu7"></a></li>
+        <li><a href="#" id="menu10"></a></li>
+        <li><a href="#" id="menu6"></a></li>
         <li><a href="dashboard2.html" id="menu2"></a></li>
         <li><a href="#" id="menu3"></a></li>
         <li><a href="#" id="menu4"></a></li>
         <li><a href="#" id="menu5"></a></li>
-        <li><a href="#" id="menu6"></a></li>
-        <li><a href="#" id="menu7"></a></li>
-        <li><a href="#" id="menu8"></a></li>
         <li><a href="#" id="menu9"></a></li>
-        <li><a href="#" id="menu10"></a></li>
         <li><a href="#" id="menu11"></a></li>
       </ul>
     </div>
@@ -72,8 +77,8 @@
     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><figure><img src="images/icon-setting.png" alt="" class="img-responsive"></figure></a>
         <ul class="dropdown-menu" role="menu">
         <li><a href="#" data-toggle="modal" data-target="#restaurantlist" id="selectRestaurant"></a></li>
-        <li><a href="#" id="changelang"></a></li>
-        <li><a href="#" id="logout"></a></li>
+        <li><a href="#" id="changelang" onclick="setlang($.cookie('lang'))"></a></li>
+        <li><a href="#" id="logout" onclick="logout()"></a></li>
         </ul>
     </li>
     </ul>
@@ -83,12 +88,25 @@
     <div class="modal-content">
       <div class="modal-body">
         <ul class="lists">
-        <li><a href="#">今天</a></li>
-        <li><a href="#">過去7天</a></li>
-        <li><a href="#">過去30天</a></li>
-        <li><a href="#">由本月開始</a></li>
-        <li><a href="#">自訂日期範圍</a></li>
+        <li><a href="#" onclick="changedisplaydate(getCurrentHTMLFile()  , 'today');" id="todaytext"></a></li>
+        <li><a href="#" onclick="changedisplaydate(getCurrentHTMLFile()  , 'yesterday');" id="yesterdaytext"></a></li>
+        <li><a href="#" onclick="changedisplaydate(getCurrentHTMLFile()  , 'dayb4yesterday');" id="dayb4yesterdaytext"></a></li>
+        <li><a href="#" data-toggle="modal" data-target="#datepickerbox" id="customedatetext"></a></li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--calendar modalbox ends-->
+    <!--calendar modalbox starts-->
+<div class="modal fade" id="datepickerbox" tabindex="-1" role="dialog" aria-labelledby="datepickerbox" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="inside-datepicker">
+            <h4 id="pleaseselectdate"></h4>
+            <input id="datepicker" style="width: 200px;"/>   
+        </div>
       </div>
     </div>
   </div>
@@ -117,7 +135,7 @@
         <div class="clearfix"></div>
         <!-- start chart -->
         <div class="chart-wrapper">
-           <div id="chart" style="width:100%"></div>
+           <div id="chart" style="width:100%; height: 230px"></div>
         </div>
         <!-- end chart -->
         <div class="table-responsive">
@@ -147,8 +165,7 @@
         </div>
     </div>
 </section>
-<!-- section listview end -->
-    
+<!-- section listview end --> 
     <!--wrapper ends-->
 <script>
     
@@ -173,15 +190,16 @@ $( "#toggle-chart-view" ).click(function( event ) {
     
 var firsttimeenter;
 var newshopid;
-    
+
 $( document ).ready(function() {
     
-    getLangText("zh");
+    getLangText($.cookie('lang'));
     
     var thisShopId;
     var currenthtmlfile;
     
-    currenthtmlfile = document.location.pathname.match(/[^\/]+$/)[0];
+    currenthtmlfile = getCurrentHTMLFile();
+    console.log("currenthtmlfile: "+currenthtmlfile);
     
     $( "#list-view-section" ).hide();
     $( "#toggle-chart-view" ).hide();
@@ -198,7 +216,6 @@ $( document ).ready(function() {
       success: function(data){
         //alert(data[0].Name);
 
-        console.log ("cookies: "+ $.cookie('shopId'));
         if ($.cookie('shopId') === undefined){
             $.cookie('shopId', thisShopId, {expires:7, path:'/'});
             thisShopId = data[0].ShopId;
@@ -242,6 +259,9 @@ $( document ).ready(function() {
     var finalcheckindatetime;
     var finalcheckoutdatetime;
     var maxMoney;
+    var year;
+    var month;
+    var day;
     var hour;
     var minute;
     var selectedworkdaystr;
@@ -251,12 +271,14 @@ $( document ).ready(function() {
     var tableDetailArr = [];
     var finalcheckindatetimeminute;
     var finalcheckoutdatetimeminute;
-    
+    var finalcheckindatetimehour;
+    var finalcheckoutdatetimehour;
+    var emptytimeArr = getEmptyTimeArr();
     
     $.ajax(
     {
       type: "GET",
-      url: "http://everyware.cloudapp.net/Report/AllTransactionsRest?shop="+getCurrentShopID(),
+      url: "http://everyware.cloudapp.net/Report/AllTransactionsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
@@ -265,55 +287,93 @@ $( document ).ready(function() {
       success: function(data){
           console.log("final ajax shopID: "+thisShopId);
           //update bottom table on dashboard
-          maxMoney = parseInt(data.SelectedTxSalesHeaderList[data.SelectedTxSalesHeaderList.length-1].TotalAmountRunningSum+500);
           
           selectedworkdayDay = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getDate();
           selectedworkdayMonth = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getMonth();
           selectedworkdayYear = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getFullYear();
           
-          selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
-          $("#selectedworkday").text(selectedworkdaystr);
-          $("#selectedworkday2").text(selectedworkdaystr);
-          
-          $.each(data.SelectedTxSalesHeaderList, function(i, item) {
+            selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
+            $("#selectedworkday").text(selectedworkdaystr);
+            $("#selectedworkday2").text(selectedworkdaystr);
+         
+           if(data.SelectedTxSalesHeaderList === null)
+           {
+               maxMoney = 8000;
+               console.log("nothing return");
+               timeArr = emptytimeArr;
+               moneyArr = [0];
+           }
+          else{
               
-              formattedcheckindatetime = new Date(parseInt(item.CheckinDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
-              formattedcheckoutdatetime = new Date(parseInt(item.CheckoutDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
-              formattedTotalAmount = "$"+item.AmountTotal;
-              
-              if(parseInt(formattedcheckindatetime.getMinutes()) <10 ){
-                  finalcheckindatetimeminute = "0"+formattedcheckindatetime.getMinutes();
+              if(data.SelectedTxSalesHeaderList[0] === undefined){
+                      maxMoney = 8000;
+                      console.log("nothing return");
+                      timeArr = emptytimeArr;
+                      moneyArr = [0];
               }
-              else{
-                  finalcheckindatetimeminute = formattedcheckindatetime.getMinutes();
-              }
-              
-              if(parseInt(formattedcheckoutdatetime.getMinutes()) <10 ){
-                  finalcheckoutdatetimeminute = "0"+formattedcheckoutdatetime.getMinutes();
-              }
-              else{
-                  
-                  finalcheckoutdatetimeminute = formattedcheckoutdatetime.getMinutes();
-              }
-              
-              
-              finalcheckindatetime = formattedcheckindatetime.getHours()+":"+finalcheckindatetimeminute;
-              finalcheckoutdatetime = formattedcheckoutdatetime.getHours()+":"+finalcheckoutdatetimeminute;
-              
-              var tableDetailArr = [item.ReceiptNo , item.TableId , finalcheckindatetime , finalcheckoutdatetime , formattedTotalAmount, item.CashierUserName];
-              
-              moneyArr.push(item.TotalAmountRunningSum);
-              tableArr.push(tableDetailArr);
-              formattedDatetime = new Date(parseInt(item.CheckoutDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
+              else {
+                          maxMoney = parseInt(data.SelectedTxSalesHeaderList[data.SelectedTxSalesHeaderList.length-1].TotalAmountRunningSum+500);
 
-              hour = formattedDatetime.getHours();
-              minute = formattedDatetime.getMinutes();
-              timeArr.push(new Date("2012/02/01 "+hour+":"+minute+":00"));
-           });
+                          $.each(data.SelectedTxSalesHeaderList, function(i, item) {
+
+                              formattedcheckindatetime = new Date(parseInt(item.CheckinDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
+                              formattedcheckoutdatetime = new Date(parseInt(item.CheckoutDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
+                              formattedTotalAmount = "$"+item.AmountTotal;
+
+                              if(parseInt(formattedcheckindatetime.getMinutes()) <10 ){
+                                  finalcheckindatetimeminute = "0"+formattedcheckindatetime.getMinutes();
+                              }
+                              else{
+                                  finalcheckindatetimeminute = formattedcheckindatetime.getMinutes();
+                              }
+                              if(parseInt(formattedcheckindatetime.getHours()) <10 ){
+                                  finalcheckindatetimehour = "0"+formattedcheckindatetime.getHours();
+                              }
+                              else{
+                                  finalcheckindatetimehour = formattedcheckindatetime.getHours();
+                              }
+
+                              if(parseInt(formattedcheckoutdatetime.getMinutes()) <10 ){
+                                  finalcheckoutdatetimeminute = "0"+formattedcheckoutdatetime.getMinutes();
+                              }
+                              else{
+
+                                  finalcheckoutdatetimeminute = formattedcheckoutdatetime.getMinutes();
+                              }
+                              if(parseInt(formattedcheckoutdatetime.getHours()) <10 ){
+                                  finalcheckoutdatetimehour = "0"+formattedcheckoutdatetime.getHours();
+                              }
+                              else{
+
+                                  finalcheckoutdatetimehour = formattedcheckoutdatetime.getHours();
+                              }
+
+                              finalcheckindatetime = finalcheckindatetimehour+":"+finalcheckindatetimeminute;
+                              finalcheckoutdatetime = finalcheckoutdatetimehour+":"+finalcheckoutdatetimeminute;
+
+                              var tableDetailArr = [item.ReceiptNo , item.TableId , finalcheckindatetime , finalcheckoutdatetime , formattedTotalAmount, item.CashierUserName];
+
+                              moneyArr.push(item.TotalAmountRunningSum);
+                              tableArr.push(tableDetailArr);
+                              formattedDatetime = new Date(parseInt(item.CheckoutDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
+
+                              year = formattedDatetime.getFullYear();
+                              month = formattedDatetime.getMonth();
+                              month = formatMonth(jsMonthtoNumbermonth(month));
+                              day = formatDay(formattedDatetime.getDate());
+                              hour = formattedDatetime.getHours();
+                              minute = formattedDatetime.getMinutes();
+
+                              timeArr.push(new Date(year+"/"+month+"/"+day+" "+hour+":"+minute+":00"));
+                           });
+              }
+          }
           
           createChart(moneyArr, timeArr, maxMoney);
           
-          $('#amount-table').printAmountTable(data.TotalSum.SumAmount, data.SelectedPeriodSumModelList);
+          if(data.SelectedTxSalesHeaderList !== null){
+              $('#amount-table').printAmountTable(data.TotalSum.SumAmount, data.SelectedPeriodSumModelList);
+           }
           
           
           //create jquery datatable
@@ -341,7 +401,31 @@ $( document ).ready(function() {
     
     $(window).on("resize", function() {
             kendo.resize($(".chart-wrapper"));
-    }); 
+    });
+    
+    //datepicker functions
+    function onOpen() {
+        console.log("Open");
+    }
+
+    function onClose() {
+        console.log("Close");
+        $('#datepickerbox').modal('hide');
+        $('#calendar').modal('hide');
+    }
+
+    function onChange() {
+       console.log("Change :: " + kendo.toString(this.value(), 'dd/MM/yyyy'));
+       $.cookie('SelectedWorkday', kendo.toString(this.value(), 'dd/MM/yyyy'), {expires:7, path:'/'});
+       console.log("SelectedWorkday cookie is chaing to: " + $.cookie('SelectedWorkday'));
+       window.location.replace(getCurrentHTMLFile());
+    }
+
+    $("#datepicker").kendoDatePicker({
+        change: onChange,
+        close: onClose,
+        open: onOpen
+    });
 });
 
 (function($){
@@ -364,83 +448,49 @@ $( document ).ready(function() {
 })(jQuery);
     
 function createChart(moneyArr , timeArr , maxMoney) {
-            $("#chart").kendoChart({
-                legend: {
-                    visible: false
-                },
-                seriesDefaults: {
-                    type: "line",
-                    missingValues: "gap",
-                    stack: true
-                },
-                series: [{
-                    name: "營業額",
-                    data: moneyArr,
-                    color: "#f3ac32"
-                }],
-                valueAxis: {
-                    max: maxMoney,
-                    line: {
-                        visible: false
-                    },
-                    minorGridLines: {
-                        visible: true
-                    }
-                },
-                categoryAxis: {
-                    categories: timeArr,
-                    baseUnit: "hours",
-                    autoBaseUnitSteps: {
-                        hours: [3]
-                    },
-                    majorGridLines: {
-                        visible: false
-                    },
-                labels: {
-                   dateFormats: {
-                        hours: "H"
-                        }
-                    }
-                },
-                tooltip: {
-                    visible: true,
-                    template: "#= series.name #: #= value #"
+    $("#chart").kendoChart({
+        legend: {
+            visible: false
+        },
+        seriesDefaults: {
+            type: "line",
+            missingValues: "gap",
+            stack: true
+        },
+        series: [{
+            name: "營業額",
+            data: moneyArr,
+            color: "#f3ac32"
+        }],
+        valueAxis: {
+            max: maxMoney,
+            line: {
+                visible: false
+            },
+            minorGridLines: {
+                visible: true
+            }
+        },
+        categoryAxis: {
+            categories: timeArr,
+            baseUnit: "hours",
+            autoBaseUnitSteps: {
+                hours: [3]
+            },
+            majorGridLines: {
+                visible: false
+            },
+        labels: {
+           dateFormats: {
+                hours: "H"
                 }
-            });
+            }
+        },
+        tooltip: {
+            visible: true,
+            template: "#= series.name #: #= value #"
         }
-    
-function jsMonthtoNumbermonth(num){
-    
-    var month = [];
-    
-    month[0] = "1";
-    month[1] = "2";
-    month[2] = "3";
-    month[3] = "4";
-    month[4] = "5";
-    month[5] = "6";
-    month[6] = "7";
-    month[7] = "8";
-    month[8] = "9";
-    month[9] = "10";
-    month[10] = "11";
-    month[11] = "12";
-    realnummonth = month[num];
-    
-    return realnummonth; 
-}
-
-function writeNewShopIDCookie(ShopID){
-    $.cookie('shopId', ShopID, {expires:7, path:'/'});
-    console.log("cookie is chaing to: " + $.cookie('shopId'));
-    window.location.replace("dashboard.html");
-}
-
-function getCurrentShopID()
-{
-    currentShopID = $.cookie('shopId');
-    
-    return currentShopID;
+    });
 }
 </script>
 </body>
