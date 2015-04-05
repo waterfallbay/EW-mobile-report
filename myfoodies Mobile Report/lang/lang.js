@@ -1,5 +1,12 @@
 var zh = {
-    texttitle1 : "一日營業總結",
+    dashboardtexttitle : "一日營業總結",
+    hourlytablesectiontotal : "營業額",
+    hourlytablediscount : "- 折扣",
+    hourlytableservicecharge : "+ 服務費",
+    hourlytabledecimal : "- 小數約數",
+    hourlytablenet : "= 營業淨額",
+    hourlytableunbilled : "未結賬單",
+    hourlytexttitle : "每小時報表",
     selectRestaurant : "選擇分店",
     changelang : "English",
     logout : "登出",
@@ -15,6 +22,7 @@ var zh = {
     day: "日",
     wholeday: "全日",
     invoiceno: "單號",
+    timesection: "時",
     tableno: "檯號",
     intime: "入座",
     outtime: "結賬",
@@ -25,6 +33,8 @@ var zh = {
     dayb4yesterdaytext: "前天",
     customedatetext: "自訂日期",
     pleaseselectdate: "請選擇日期",
+    chartnotrans:  "交易宗數",
+    charthourlyamt: "每小時金額",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -37,12 +47,20 @@ var zh = {
         ReportHourlySales : "每小時報表",
         ReportSales : "營業報表",
         CashierReport : "收銀員報表",
-        menuheader1 : "總銷售報表"
+        menuheader1 : "總銷售報表",
+        menuheader2 : "每小時報表"
     }
 };
 
 var en = {
-    texttitle1 : "All Day Sales",
+    dashboardtexttitle : "All Day Sales",
+    hourlytexttitle : "Hourly Sales",
+    hourlytablesectiontotal : "Total Sales",
+    hourlytablediscount : "- Discount",
+    hourlytableservicecharge : "+ Service Fee",
+    hourlytabledecimal : "- Roundings",
+    hourlytablenet : "= Net Sales",
+    hourlytableunbilled : "Unbilled",
     selectRestaurant : "Select Store",
     changelang : "中文",
     logout : "Logout",
@@ -58,6 +76,7 @@ var en = {
     day: "",
     wholeday: "All Day",
     invoiceno: "No.",
+    timesection: "Hour",
     tableno: "Table",
     intime: "In",
     outtime: "Out",
@@ -68,6 +87,8 @@ var en = {
     dayb4yesterdaytext: "Day Before",
     customedatetext: "Custom Date",
     pleaseselectdate: "Select a Date",
+    chartnotrans:  "no. of transactions",
+    charthourlyamt: "hourly amount",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
@@ -80,7 +101,8 @@ var en = {
         ReportHourlySales : "Hourly Sales",
         ReportSales : "Summary",
         CashierReport : "Cashier Log",
-        menuheader1 : "All Day Sales"
+        menuheader1 : "All Day Sales",
+        menuheader2 : "Houly Sales"
     }
     
 };
@@ -92,11 +114,14 @@ var monthtext;
 var daytext;
 var whodaytext;
 var invoiceno;
+var timesection;
 var tableno;
 var intime;
 var outtime;
 var ttamount;
 var cashierstaff;
+var chartnotrans;
+var charthourlyamt;
 
 function getLangText(lang){
 
@@ -116,8 +141,11 @@ function getLangText(lang){
     $('#menu10').html(currentlang.menu.ReportSales);
     $('#menu11').html(currentlang.menu.CashierReport);
     $('#menuheader1').html(currentlang.menu.menuheader1);
-    $('#texttitle1').html(currentlang.texttitle1);
-    $('#texttitle2').html(currentlang.texttitle1);
+    $('#menuheader2').html(currentlang.menu.menuheader2);
+    $('#dashboardtexttitle1').html(currentlang.dashboardtexttitle);
+    $('#dashboardtexttitle2').html(currentlang.dashboardtexttitle);
+    $('#hourlytexttitle1').html(currentlang.hourlytexttitle);
+    $('#hourlytexttitle2').html(currentlang.hourlytexttitle);
     $('#selectRestaurant').html(currentlang.selectRestaurant);
     $('#changelang').html(currentlang.changelang);
     $('#logout').html(currentlang.logout);
@@ -145,6 +173,18 @@ function getLangText(lang){
     outtime = currentlang.outtime;
     ttamount = currentlang.ttamount;
     cashierstaff = currentlang.cashierstaff;
+
+    // hourly page
+    $('#hourly-table-section-total').html(currentlang.hourlytablesectiontotal);
+    $('#hourly-table-discount').html(currentlang.hourlytablediscount);
+    $('#hourly-table-servicecharge').html(currentlang.hourlytableservicecharge);
+    $('#hourly-table-decimal').html(currentlang.hourlytabledecimal);
+    $('#hourly-table-net').html(currentlang.hourlytablenet);
+    $('#hourly-table-unbilled').html(currentlang.hourlytableunbilled);
+    
+    timesection = currentlang.timesection;
+    chartnotrans = currentlang.chartnotrans;
+    charthourlyamt = currentlang.charthourlyamt;
 }
 
 function decidecurrentlang(lang)
