@@ -45,5 +45,5 @@ header ul.head-link li a figure.sm{ max-width:14px;}
 .container{ height:auto;}
 .login input[type='submit']{ margin:0;}
 .login .error{ margin-bottom:20px;}
-.graph-data>tbody>tr>td, .graph-data>tbody>tr>td span, .graph-data>tbody>tr>td span.large{ font-size:20px; padding:5px;}
+.graph-data>tbody>tr>td, .graph-data>tbody>tr>td span, .graph-data>tbody>tr>td span.large{ font-size:19px; padding:5px;}
 }

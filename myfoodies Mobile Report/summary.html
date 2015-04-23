@@ -26,12 +26,14 @@
     <script src="js/main.js"></script>
     <script src="lang/lang.js"></script>
     
+    
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/media-query.css" rel="stylesheet">
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -151,8 +153,27 @@
         <h1 class="title" id="shopName2">&nbsp;</h1>
         <h4 id="summarytexttitle2"></h4>
         <div class="clearfix"></div>
+        <div id="cashiertext">收銀員</div>
         <div class="table-responsive">
-        	<table id="mydataTable" class="table table-condensed" style="width:100%">
+        	<table id="mydataTableCashier" class="table table-condensed" style="width:100%">
+            	
+            </table>
+        </div>
+        <div id="payintext">代收</div>
+        <div class="table-responsive">
+        	<table id="mydataTablePayin" class="table table-condensed" style="width:100%">
+            	
+            </table>
+        </div>
+        <div id="payouttext">代支</div>
+        <div class="table-responsive">
+        	<table id="mydataTablePayout" class="table table-condensed" style="width:100%">
+            	
+            </table>
+        </div>
+        <div id="discounttext">折扣</div>
+        <div class="table-responsive">
+        	<table id="mydataTableDiscount" class="table table-condensed" style="width:100%">
             	
             </table>
         </div>
@@ -249,7 +270,6 @@ $( document ).ready(function() {
     var timeArr = [];
     var moneyArr = [];
     var amtArr = [];
-    var tableArr = [];
     var formattedDatetime;
     var formattedcheckindatetime;
     var formattedcheckoutdatetime;
@@ -266,7 +286,6 @@ $( document ).ready(function() {
     var selectedworkdayDay;
     var selectedworkdayMonth;
     var selectedworkdayYear;
-    var tableDetailArr = [];
     var finalcheckindatetimeminute;
     var finalcheckoutdatetimeminute;
     var finalcheckindatetimehour;
@@ -275,6 +294,14 @@ $( document ).ready(function() {
     var itemArrNo2 = [];
     var itemArrName2 = [];
     var itemArrValue2 = [];
+    var tableCashierArr = [];
+    var tableDetailCashierArr = [];
+    var tablePayinArr = [];
+    var tablePayoutArr = [];
+    var tableDiscountArr = [];
+    var tableDetailPayinArr = [];
+    var tableDetailPayoutArr = [];
+    var tableDetailDiscountArr = [];
     
     $.ajax(
     {
@@ -321,19 +348,42 @@ $( document ).ready(function() {
 
                       $.each(data.rptTurnoverMaster.RptTxSalesDetailCategoryList, function(i, itm) {
 
-                          //var itemDetailCatArr = {category: itm.ItemName, value: itm.ItemValue};
-                          //console.log("cat name: "+ itm.ItemValue);
                           itemArrNo2.push(itm.ItemCount);
                           itemArrName2.push(itm.ItemName);
                           itemArrValue2.push(itm.ItemValue);
                       });
+                      
+                      //loop through cashier table
+                      $.each(data.rptTurnoverMaster.RptDetailCashierList, function(i, itm) {
 
+                          //create table view array
+                          tableDetailCashierArr = [itm.ItemName , itm.ItemCount , itm.ItemValue];
+                          tableCashierArr.push(tableDetailCashierArr);
+                      });
+                  
+                      //loop through payin table
+                      $.each(data.rptTurnoverMaster.RptDetailPayinList, function(i, itm) {
 
-                      //create table view array
-                      //var tableDetailArr = [item.ItemName , item.ItemCode , item.ItemCount , item.ItemValue];
+                          //create table view array
+                          tableDetailPayinArr = [itm.ItemName , itm.ItemCount , itm.ItemValue];
+                          tablePayinArr.push(tableDetailPayinArr);
+                      });
+                  
+                      //loop through payout table
+                      $.each(data.rptTurnoverMaster.RptDetailPayOutList, function(i, itm) {
 
-                      //push value to table view
-                      //tableArr.push(tableDetailArr);
+                          //create table view array
+                          tableDetailPayoutArr = [itm.ItemName , itm.ItemCount , itm.ItemValue];
+                          tablePayoutArr.push(tableDetailPayoutArr);
+                      });
+                  
+                      //loop through payout table
+                      $.each(data.rptTurnoverMaster.RptDetailDiscountList, function(i, itm) {
+
+                          //create table view array
+                          tableDetailDiscountArr = [itm.ItemName , itm.ItemCount , itm.ItemValue];
+                          tableDiscountArr.push(tableDetailDiscountArr);
+                      });
 
                       createPieChart(itemArr , itemArrNo2 , itemArrName2 , itemArrValue2);
               }
@@ -342,23 +392,64 @@ $( document ).ready(function() {
           
           
           if(data.rptTurnoverMaster.RptTxSalesDetailCategoryList.length > 0){
-              $('#amount-table').printAmountTable(data.resultReportTurnoverHeader);
+              $('#amount-table').printAmountTable(data.resultReportTurnoverHeader , data.rptTurnoverMaster);
            }
           
           
-          //create jquery datatable
-          $('#mydataTable').dataTable({
-             "data": tableArr,
-             "order": [[ 2, "desc" ]],
+          //create jquery datatable cashier
+          $('#mydataTableCashier').dataTable({
+             "data": tableCashierArr,
              "columns": [
-                { "title": itemname },
-                { "title": itemcode },
+                { "title": cashier },
                 { "title": itemcount },
-                { "title": ttamount }
+                { "title": ttamount },
                 ],
               "paging": false,
               "bFilter": false,
-              "info": false
+              "info": false,
+              "language": datatablelang
+            });
+          
+          //create jquery datatable payin
+          $('#mydataTablePayin').dataTable({
+             "data": tablePayinArr,
+             "columns": [
+                { "title": itemtext },
+                { "title": itemcount },
+                { "title": ttamount },
+                ],
+              "paging": false,
+              "bFilter": false,
+              "info": false,
+              "language": datatablelang
+            });
+          
+          //create jquery datatable payout
+          $('#mydataTablePayout').dataTable({
+             "data": tablePayoutArr,
+             "columns": [
+                { "title": itemtext },
+                { "title": itemcount },
+                { "title": ttamount },
+                ],
+              "paging": false,
+              "bFilter": false,
+              "info": false,
+              "language": datatablelang
+            });
+          
+          //create jquery datatable discount
+          $('#mydataTableDiscount').dataTable({
+             "data": tableDiscountArr,
+             "columns": [
+                { "title": itemtext },
+                { "title": itemcount },
+                { "title": ttamount },
+                ],
+              "paging": false,
+              "bFilter": false,
+              "info": false,
+              "language": datatablelang
             });
       },
       error: function (xhr) {
@@ -399,14 +490,18 @@ $( document ).ready(function() {
 
 (function($){
     $.fn.extend({
-        printAmountTable: function(thidata) {
+        printAmountTable: function(thidata, thatdata) {
             
             $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="hourly-table-section-total"></span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-discount"></span></td><td><div id="table-discount-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-servicecharge"></span></td><td><div id="table-servicecharge-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-decimal"></span></td><td><div id="table-decimal-value"></div></td></tr>');
-            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-net"> <font size="1">('+thidata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
-            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-unbilled"> <font size="1">('+thidata.UncloseTxCount+')</font></span></td><td><div id="table-unbilled-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-net"></font> <font size="1">('+thidata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-unbilled"></font> <font size="1">('+thidata.UncloseTxCount+')</font></span></td><td><div id="table-unbilled-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="cancelled-item">'+cancelleditem+'</font> <font size="1">('+thatdata.RptCancelTxDetail.ItemCount+')</font></span></td><td><div id="cancelled-item-value"></div></td></tr>');
+             $("#amount-table tr:last").after('<tr><td><span><font id="cancelled-bill">'+cancelledbill+'</font> <font size="1">('+thatdata.RptCancelTxHeader.ItemCount+')</font></span></td><td><div id="cancelled-bill-value"></div></td></tr>');
+            
+            
             getLangText(window.localStorage.getItem('storagelang'));
             $("#WholeDaySum").text(thidata.DayTurnover).formatCurrency();
             $("#table-discount-value").text(thidata.DayDiscount).formatCurrency();
@@ -416,7 +511,8 @@ $( document ).ready(function() {
             console.log("Rounding:" + thidata.DayRounding);
             $("#table-net-value").text(thidata.DayNetTurnoverAmount).formatCurrency();
             $("#table-unbilled-value").text(thidata.UncloseTxAmount).formatCurrency();
-      
+            $("#cancelled-item-value").text(thatdata.RptCancelTxDetail.ItemValue).formatCurrency();
+            $("#cancelled-bill-value").text(thatdata.RptCancelTxHeader.ItemValue).formatCurrency();
             return;
         }
     });

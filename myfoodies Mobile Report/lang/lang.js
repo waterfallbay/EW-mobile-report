@@ -33,6 +33,7 @@ var zh = {
     itemcode: "編碼",
     itemcount: "數量",
     cashierstaff: "員工",
+    cashier: "收銀員",
     todaytext: "今天",
     yesterdaytext: "昨天",
     dayb4yesterdaytext: "前天",
@@ -50,6 +51,12 @@ var zh = {
     chartitemno: "銷售數量",
     nodata: "沒有數據，請檢查店舖的網絡連線。",
     nodata2: "不能連接服務器，請檢查你的網連線。",
+    cancelleditem: "取消項目",
+    cancelledbill: "取消單據",
+    itemtext: "項目",
+    payin: "代收",
+    payout: "代支",
+    discount: "折扣",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -104,6 +111,7 @@ var en = {
     itemcode: "Code",
     itemcount: "Qty.",
     cashierstaff: "Staff.",
+    cashier: "Cashier",
     todaytext: "Today",
     yesterdaytext: "Yesterday",
     dayb4yesterdaytext: "Day Before",
@@ -121,6 +129,12 @@ var en = {
     chartitemno: "quantity",
     nodata: "No data retrieved, please check the internet connection of this store.",
     nodata2: "Cannot connect to remote service, please check your internet connection.",
+    cancelleditem: "Cancelled Item",
+    cancelledbill: "Cancelled Bill",
+    itemtext: "Item",
+    payin: "Pay-in",
+    payout: "Pay-out",
+    discount: "Discount",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
@@ -167,6 +181,10 @@ var catperformance;
 var chartitemamt;
 var chartitemno;
 var nodata;
+var cancelleditem;
+var cancelledbill;
+var cashier;
+var itemtext;
 
 function getLangText(lang){
 
@@ -250,6 +268,16 @@ function getLangText(lang){
     catperformance = currentlang.catperformance;
     chartitemamt = currentlang.chartitemamt;
     chartitemno = currentlang.chartitemno;
+    cancelleditem = currentlang.cancelleditem;
+    cancelledbill = currentlang.cancelledbill;
+    cashier = currentlang.cashier;
+    itemtext = currentlang.itemtext;
+    $('#cashiertext').html(currentlang.cashier);
+    $('#payintext').html(currentlang.payin);
+    $('#payouttext').html(currentlang.payout);
+    $('#discounttext').html(currentlang.discount);
+    
+    
     
     //nodata
     $('#nodata').html(currentlang.nodata);
@@ -262,14 +290,17 @@ function decidecurrentlang(lang)
     {
         currentlang = en;
         kendo.culture("en-US");
+        datatablelang = dten;
     }
     else if(lang==="zh"){
         currentlang = zh;
         kendo.culture("zh-HK");
+        datatablelang = dtzh;
     }
     else{
          currentlang = zh;
          kendo.culture("zh-HK");
+         datatablelang = dtzh;
     }
         
     return currentlang;
@@ -290,4 +321,46 @@ function setlang(lang)
     }
     
     window.location.replace(getCurrentHTMLFile());
+}
+
+var dtzh = {
+    "sProcessing":   "處理中...",
+    "sLengthMenu":   "顯示 _MENU_ 項結果",
+    "sZeroRecords":  "沒有相關紀錄",
+    "sInfo":         "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+    "sInfoEmpty":    "顯示第 0 至 0 項結果，共 0 項",
+    "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+    "sInfoPostFix":  "",
+    "sSearch":       "搜索:",
+    "sUrl":          "",
+    "oPaginate": {
+        "sFirst":    "首頁",
+        "sPrevious": "上頁",
+        "sNext":     "下頁",
+        "sLast":     "尾頁"
+    }
+}
+
+var dten = {
+    "sEmptyTable":     "No record found",
+    "sInfo":           "Showing _START_ to _END_ of _TOTAL_ entries",
+    "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
+    "sInfoFiltered":   "(filtered from _MAX_ total entries)",
+    "sInfoPostFix":    "",
+    "sInfoThousands":  ",",
+    "sLengthMenu":     "Show _MENU_ entries",
+    "sLoadingRecords": "Loading...",
+    "sProcessing":     "Processing...",
+    "sSearch":         "Search:",
+    "sZeroRecords":    "No matching records found",
+    "oPaginate": {
+        "sFirst":    "First",
+        "sLast":     "Last",
+        "sNext":     "Next",
+        "sPrevious": "Previous"
+    },
+    "oAria": {
+        "sSortAscending":  ": activate to sort column ascending",
+        "sSortDescending": ": activate to sort column descending"
+    }
 }
