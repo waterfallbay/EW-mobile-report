@@ -1,8 +1,0 @@
-{
-  "ProjectName": "myfoodies Mobile ReportMobileTesting",
-  "ProjectGuid": "4492e061-2585-4b57-a6f7-3e74c87b7c2c",
-  "projectVersion": 1,
-  "ProjectTypeGuids": "{6319b66f-8dff-4073-91be-3cd48a2fdeb3}",
-  "FrameworkVersion": "1.0",
-  "Framework": "MobileTesting"
-}

@@ -1,19 +1,19 @@
 function writeNewShopIDCookie(ShopID){
-    $.cookie('shopId', ShopID, {expires:7, path:'/'});
-    console.log("cookie is chaing to: " + $.cookie('shopId'));
+    localStorage.setItem('storageshop' , ShopID);
+    console.log("cookie is chaing to: " + localStorage.getItem('storageshop'));
     window.location.replace("dashboard.html");
 }
 
 function getCurrentShopID()
 {
-    currentShopID = $.cookie('shopId');
+    currentShopID = localStorage.getItem('storageshop');
     
     return currentShopID;
 }
     
 function getSelectedWorkDay()
 {
-    currentSelectedWorkday = $.cookie('SelectedWorkday');
+    currentSelectedWorkday = localStorage.getItem('storageworkday');
     
     return currentSelectedWorkday;
 }
@@ -113,8 +113,9 @@ function changedisplaydate(page, day)
     formattedrequesteddayforchart = yyyy+'/'+mm+'/'+dd;
     console.log("formmatted requestd day: "+formattedrequestedday);
     
-    $.cookie('SelectedWorkday', formattedrequestedday, {expires:7, path:'/'});
-    console.log("SelectedWorkday cookie is chaing to: " + $.cookie('SelectedWorkday'));
+    //$.cookie('SelectedWorkday', formattedrequestedday, {expires:7, path:'/'});
+    localStorage.setItem('storageworkday', formattedrequestedday); 
+    console.log("SelectedWorkday cookie is chaing to: " + localStorage.getItem('storageworkday'));
     window.location.replace(page);
 }
 
@@ -146,18 +147,18 @@ function logout()
 
 function forgeteverything()
 {
-    $.cookie('rememberme', 'no', {expires:365, path:'/'});
-    $.removeCookie("username");
+    localStorage.setItem('storagerememberme', 'no');
+    localStorage.removeItem('storageusername');
 }
 
 function getUserNameFromCookies()
 {
     var usernamefromcookies;
     
-    console.log("remember me?: " + $.cookie('rememberme'));
+    console.log("remember me?: " + localStorage.getItem('storagerememberme'));
     
-    if($.cookie('rememberme') === "yes"){
-         usernamefromcookies = $.cookie("username");
+    if(localStorage.getItem('storagerememberme') === "yes"){
+         usernamefromcookies = localStorage.getItem('storageusername');
     }
     else
     {

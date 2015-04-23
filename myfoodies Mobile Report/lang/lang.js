@@ -2,11 +2,13 @@ var zh = {
     dashboardtexttitle : "一日營業總結",
     hourlytablesectiontotal : "營業額",
     hourlytablediscount : "- 折扣",
+    hourlytablememberdiscount : "- 會員折扣",
     hourlytableservicecharge : "+ 服務費",
     hourlytabledecimal : "- 小數約數",
     hourlytablenet : "= 營業淨額",
     hourlytableunbilled : "未結賬單",
     hourlytexttitle : "每小時報表",
+    byitemtexttitle : "銷貨情況",
     selectRestaurant : "選擇分店",
     changelang : "English",
     logout : "登出",
@@ -27,6 +29,9 @@ var zh = {
     intime: "入座",
     outtime: "結賬",
     ttamount: "金額",
+    itemname: "名稱",
+    itemcode: "編碼",
+    itemcount: "數量",
     cashierstaff: "員工",
     todaytext: "今天",
     yesterdaytext: "昨天",
@@ -35,6 +40,14 @@ var zh = {
     pleaseselectdate: "請選擇日期",
     chartnotrans:  "交易宗數",
     charthourlyamt: "每小時金額",
+    chartsalestext: "營業額",
+    salesitembyqty: "銷售項目 (按銷售數量)",
+    salesitembyamt: "銷售項目 (按銷售金額)",
+    dinein: "堂食",
+    takeaway: "外賣",
+    catperformance: "分類銷售表現",
+    chartitemamt: "銷售金額",
+    chartitemno: "銷售數量",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -48,7 +61,9 @@ var zh = {
         ReportSales : "營業報表",
         CashierReport : "收銀員報表",
         menuheader1 : "總銷售報表",
-        menuheader2 : "每小時報表"
+        menuheader2 : "每小時報表",
+        menuheader3 : "鎖貨報表",
+        menuheader4 : "營業報表"
     }
 };
 
@@ -57,10 +72,12 @@ var en = {
     hourlytexttitle : "Hourly Sales",
     hourlytablesectiontotal : "Total Sales",
     hourlytablediscount : "- Discount",
+    hourlytablememberdiscount : "- Member Dis.",
     hourlytableservicecharge : "+ Service Fee",
     hourlytabledecimal : "- Roundings",
     hourlytablenet : "= Net Sales",
     hourlytableunbilled : "Unbilled",
+    byitemtexttitle : "Sales by Item",
     selectRestaurant : "Select Store",
     changelang : "中文",
     logout : "Logout",
@@ -81,6 +98,9 @@ var en = {
     intime: "In",
     outtime: "Out",
     ttamount: "Amt.",
+    itemname: "Name",
+    itemcode: "Code",
+    itemcount: "Qty.",
     cashierstaff: "Staff.",
     todaytext: "Today",
     yesterdaytext: "Yesterday",
@@ -89,6 +109,14 @@ var en = {
     pleaseselectdate: "Select a Date",
     chartnotrans:  "no. of transactions",
     charthourlyamt: "hourly amount",
+    chartsalestext: "Sales",
+    salesitembyqty: "Sales Items (by quantity)",
+    salesitembyamt: "Sales Items (by amount)",
+    dinein: "Dinein",
+    takeaway: "Takeaway",
+    catperformance: "Sales by Category",
+    chartitemamt: "amount",
+    chartitemno: "quantity",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
@@ -102,7 +130,9 @@ var en = {
         ReportSales : "Summary",
         CashierReport : "Cashier Log",
         menuheader1 : "All Day Sales",
-        menuheader2 : "Houly Sales"
+        menuheader2 : "Houly Sales",
+        menuheader3 : "Sales by Item",
+        menuheader4 : "Summary"
     }
     
 };
@@ -119,9 +149,19 @@ var tableno;
 var intime;
 var outtime;
 var ttamount;
+var iteamname;
+var itemcode;
+var itemcount;
 var cashierstaff;
 var chartnotrans;
 var charthourlyamt;
+var salesitembyamttext;
+var salesitembyqtytext;
+var dinein;
+var takeaway;
+var catperformance;
+var chartitemamt;
+var chartitemno;
 
 function getLangText(lang){
 
@@ -142,10 +182,14 @@ function getLangText(lang){
     $('#menu11').html(currentlang.menu.CashierReport);
     $('#menuheader1').html(currentlang.menu.menuheader1);
     $('#menuheader2').html(currentlang.menu.menuheader2);
+    $('#menuheader3').html(currentlang.menu.menuheader3);
+    $('#menuheader4').html(currentlang.menu.menuheader4);
     $('#dashboardtexttitle1').html(currentlang.dashboardtexttitle);
     $('#dashboardtexttitle2').html(currentlang.dashboardtexttitle);
     $('#hourlytexttitle1').html(currentlang.hourlytexttitle);
     $('#hourlytexttitle2').html(currentlang.hourlytexttitle);
+    $('#byitemtexttitle1').html(currentlang.byitemtexttitle);
+    $('#byitemtexttitle2').html(currentlang.byitemtexttitle);
     $('#selectRestaurant').html(currentlang.selectRestaurant);
     $('#changelang').html(currentlang.changelang);
     $('#logout').html(currentlang.logout);
@@ -173,10 +217,12 @@ function getLangText(lang){
     outtime = currentlang.outtime;
     ttamount = currentlang.ttamount;
     cashierstaff = currentlang.cashierstaff;
+    chartsalestext = currentlang.chartsalestext;
 
     // hourly page
     $('#hourly-table-section-total').html(currentlang.hourlytablesectiontotal);
     $('#hourly-table-discount').html(currentlang.hourlytablediscount);
+    $('#hourly-table-memberdiscount').html(currentlang.hourlytablememberdiscount); 
     $('#hourly-table-servicecharge').html(currentlang.hourlytableservicecharge);
     $('#hourly-table-decimal').html(currentlang.hourlytabledecimal);
     $('#hourly-table-net').html(currentlang.hourlytablenet);
@@ -185,6 +231,20 @@ function getLangText(lang){
     timesection = currentlang.timesection;
     chartnotrans = currentlang.chartnotrans;
     charthourlyamt = currentlang.charthourlyamt;
+    
+    //byitem page
+    salesitembyamttext = currentlang.salesitembyamt;
+    salesitembyqtytext = currentlang.salesitembyqty;
+    itemname = currentlang.itemname;
+    itemcode = currentlang.itemcode;
+    itemcount = currentlang.itemcount;
+    
+    //summary page
+    dinein = currentlang.dinein;
+    takeaway = currentlang.takeaway;
+    catperformance = currentlang.catperformance;
+    chartitemamt = currentlang.chartitemamt;
+    chartitemno = currentlang.chartitemno;
 }
 
 function decidecurrentlang(lang)
@@ -211,13 +271,13 @@ function setlang(lang)
     var page = document.location.pathname.match(/[^\/]+$/)[0];
     
     if (lang === "zh"){
-        $.cookie('lang', "en" , {expires:365, path:'/'});
+        window.localStorage.setItem("storagelang", "en");
     }
     else if(lang === "en"){
-        $.cookie('lang', "zh" , {expires:365, path:'/'});
+        window.localStorage.setItem("storagelang", "zh");
     }
     else{
-        $.cookie('lang', "zh" , {expires:365, path:'/'});
+        window.localStorage.setItem("storagelang", "zh");
     }
     
     window.location.replace(getCurrentHTMLFile());

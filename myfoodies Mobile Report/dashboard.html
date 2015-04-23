@@ -3,7 +3,6 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
-    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="kendo/styles/kendo.common.min.css" />
     <link rel="stylesheet" href="kendo/styles/kendo.default.min.css" />
     
@@ -15,8 +14,6 @@
     <script src="kendo/js/kendo.all.min.js"></script>
     <script src="kendo/js/kendo.culture.zh-HK.min.js"></script>
     <script src="kendo/js/kendo.messages.zh-HK.js"></script>
-    <script src="kendo/js/kendo.mobile.min.js"></script>
-    
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
     <!-- Include all compiled plugins (below), or include individual files as needed --> 
@@ -24,7 +21,6 @@
     <script src="js/jasny-bootstrap.min.js"></script>
     <script src="js/jquery.formatCurrency-1.4.0.min.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/jquery.cookie.js"></script>
     <script src="js/util.js"></script>
     <script src="js/main.js"></script>
     <script src="lang/lang.js"></script>
@@ -43,9 +39,9 @@
     <![endif]-->
 </head>
 <body>
+<div class="loader"></div>
 <header>
 	<div class="navmenu navmenu-default navmenu-fixed-left offcanvas">
-      <!--<a class="navmenu-brand" href="#">Project name</a>-->
       <ul class="nav navmenu-nav" id="navbarcontent">
       </ul>
     </div>
@@ -66,7 +62,7 @@
     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><figure><img src="images/icon-setting.png" alt="" class="img-responsive"></figure></a>
         <ul class="dropdown-menu" role="menu">
         <li><a href="#" data-toggle="modal" data-target="#restaurantlist" id="selectRestaurant"></a></li>
-        <li><a href="#" id="changelang" onclick="setlang($.cookie('lang'))"></a></li>
+        <li><a href="#" id="changelang" onclick="setlang(window.localStorage.getItem('storagelang'))"></a></li>
         <li><a href="#" id="logout" onclick="logout()"></a></li>
         </ul>
     </li>
@@ -157,7 +153,10 @@
 <!-- section listview end --> 
     <!--wrapper ends-->
 <script>
-    
+$(window).load(function() {
+	$(".loader").fadeOut("slow");
+})
+
 $( "#toggle-list-view" ).click(function( event ) {
   event.preventDefault();
   $( "#chart-view-section" ).hide();
@@ -184,7 +183,7 @@ $( document ).ready(function() {
     
     $('#dataTable').DataTable();
     
-    getLangText($.cookie('lang'));
+    getLangText(window.localStorage.getItem("storagelang"));
     
     var thisShopId;
     var currenthtmlfile;
@@ -198,23 +197,21 @@ $( document ).ready(function() {
     $.ajax(
     { 
       type: "GET",
-      url: "http://everyware.cloudapp.net/Report/ShopListRest",
+      url: "http://ewpos.io/Report/ShopListRest",
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
       },
       crossDomain: true,
       success: function(data){
-
-        if ($.cookie('shopId') === undefined){
-            $.cookie('shopId', thisShopId, {expires:7, path:'/'});
+        if (localStorage.getItem('storageshop') === null){
             thisShopId = data[0].ShopId;
+            localStorage.setItem('storageshop' , thisShopId);
             $('#shopName').text(data[0].Name);
             $('#shopName2').text(data[0].Name);
-            console.log("thisShopID no cookies: "+thisShopId);
         }
         else{
-            thisShopId = $.cookie('shopId');
+            thisShopId = localStorage.getItem('storageshop');
            
             $.each(data, function(i, item){
                 if (data[i].ShopId == thisShopId){
@@ -268,7 +265,7 @@ $( document ).ready(function() {
     $.ajax(
     {
       type: "GET",
-      url: "http://everyware.cloudapp.net/Report/AllTransactionsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
+      url: "http://ewpos.io/Report/AllTransactionsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
@@ -286,7 +283,7 @@ $( document ).ready(function() {
             $("#selectedworkday").text(selectedworkdaystr);
             $("#selectedworkday2").text(selectedworkdaystr);
          
-           if(data.SelectedTxSalesHeaderList === null)
+           if(data.SelectedTxSalesHeaderList == null)
            {
                maxMoney = 8000;
                timeArr = emptytimeArr;
@@ -294,7 +291,7 @@ $( document ).ready(function() {
            }
           else{
               
-              if(data.SelectedTxSalesHeaderList[0] === undefined){
+              if(data.SelectedTxSalesHeaderList[0] === "undefined"){
                       maxMoney = 8000;
                       timeArr = emptytimeArr;
                       moneyArr = [0];
@@ -407,8 +404,8 @@ $( document ).ready(function() {
 
     function onChange() {
        console.log("Change :: " + kendo.toString(this.value(), 'dd/MM/yyyy'));
-       $.cookie('SelectedWorkday', kendo.toString(this.value(), 'dd/MM/yyyy'), {expires:7, path:'/'});
-       console.log("SelectedWorkday cookie is chaing to: " + $.cookie('SelectedWorkday'));
+       localStorage.setItem('storageworkday', kendo.toString(this.value(), 'dd/MM/yyyy')); 
+       console.log("SelectedWorkday cookie is chaing to: " + localStorage.getItem('storageworkday'));
        window.location.replace(getCurrentHTMLFile());
     }
 
@@ -445,11 +442,11 @@ function createChart(moneyArr , timeArr , maxMoney) {
         },
         seriesDefaults: {
             type: "line",
-            missingValues: "gap",
+            missingValues: "interpolate",
             stack: true
         },
         series: [{
-            name: "營業額",
+            name: chartsalestext,
             data: moneyArr,
             color: "#f3ac32"
         }],

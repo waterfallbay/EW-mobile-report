@@ -29,9 +29,9 @@ p {
 	margin-bottom: 25px;
 }
 a {
-	transition: all 0.5s ease;
-	-webkit-transition: all 0.5s ease;
-	-moz-transition: all 0.5s ease;
+	transition: all 0.1s ease;
+	-webkit-transition: all 0.1s ease;
+	-moz-transition: all 0.1s ease;
 }
 a:hover, a:focus {
 	text-decoration: none;
@@ -94,12 +94,23 @@ header ul.head-link li a{ font-size:26px; color:#fff;}
 header ul.head-link li a figure{ max-width:20px; margin:4px 0;}
 header ul.head-link li a figure.sm{ max-width:20px;}
 header ul.head-link-right{ float:right; right:0;}
-header ul.head-link li>ul.dropdown-menu{ padding:0; border:none; left:auto; right:0; background:#1981B5; border-radius:0; box-shadow:none;}
+header ul.head-link li>ul.dropdown-menu{ padding:0; border:none; left:auto; right:0; background:#1896d4; border-radius:0; box-shadow:none;}
 header ul.head-link li>ul.dropdown-menu li{ display:block; width:100%; border-bottom:solid 1px #FFF;}
 header ul.head-link li>ul.dropdown-menu li:last-child{ border-bottom:none;}
 header ul.head-link li>ul.dropdown-menu li a{ display:block; text-align:center; font-size:20px;}
-header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dropdown-menu>li>a:focus{ background-color:#1896D4; color:#fff;}
+header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dropdown-menu>li>a:focus{ background-color:#123456; color:#fff;}
 
+/* page loader */
+.loader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url('../images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);
+}
+    
 /*container contents css goes here*/
 .wrapper{ padding-top:70px;}
 .wrapper h1{ margin:0; padding:0; text-align:center; font-size:30px; color:#202020;}
@@ -113,15 +124,15 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 .graph-data>tbody>tr>td span.large{ background-color:#c99854; padding:15px; color:#fff; font-size:30px; display:block;}
 .graph-data>tbody>tr>td span.large-txt{ background:none; color:#4e4e4d; padding-right:0;}
 #mydataTable{}
-#mydataTable thead{ background-color:#667949; color:#fff;}
+#mydataTable thead{ background-color:#c99854; color:#fff;}
 #mydataTable thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
-#mydataTable tbody{ background-color:#dbdbdb;}
+#mydataTable tbody{ background-color:#e7e7e7;}
 #mydataTable tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}
 #mydataTable tbody td:focus{ outline:none !important;}
 #mydataTable_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}
 
-.language:hover, .login input[type='submit']:hover{ background-color:#385655; color:#fff; transition: all 0.5s ease;
- -webkit-transition: all 0.5s ease; -moz-transition: all 0.5s ease;}
+.language:hover, .login input[type='submit']:hover{ background-color:#385655; color:#fff; transition: all 0.1s ease;
+ -webkit-transition: all 0.1s ease; -moz-transition: all 0.1s ease;}
 
 .form-check{ float:right; position:relative; !important; }
 .form-check input[type='checkbox']{ /*float:left; width:30px; border:none; height:30px; cursor:pointer; margin-right:15px; background:#fff;*/ display:none;}
@@ -135,6 +146,7 @@ input[type=checkbox]:checked + label:before { content: "\f00c"; font-family:'Fon
 .modal-content ul.lists li{ display:block; border-bottom:solid 1px #fff;}
 .modal-content ul.lists li:last-child{ border-bottom:none;}
 .modal-content ul.lists li a{ color:#fff; font-size:20px; text-align:center; display:block; padding:10px 0;}
+.modal-content ul.lists li a:hover{ background-color:#123456;}
 .modal-body{ padding:0;}
 .modal-body .inside-datepicker{ padding:10px 10px 10px 10px; text-align:center; }
 .modal-body .inside-datepicker h4{ font-size:20px; color:#fff;}
