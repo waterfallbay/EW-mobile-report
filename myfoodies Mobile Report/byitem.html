@@ -298,7 +298,7 @@ $( document ).ready(function() {
            }
           else{
               
-              if(data.RptGeneralDetailList[0] === "undefined"){
+              if(data.RptGeneralDetailList.length == 0){
                       itemArr = [0];
               }
               else {
@@ -315,12 +315,13 @@ $( document ).ready(function() {
                           //push value to table view
                           tableArr.push(tableDetailArr);
                       });
+                  
+                      createTreeMap(itemArr, itemArr2);
               }
           }
-          
-          createTreeMap(itemArr, itemArr2);
-          
-          if(data.SelectedTxSalesHeaderList !== null){
+
+          console.log("list: " + data.RptGeneralDetailList);
+          if(data.RptGeneralDetailList != ""){
               $('#amount-table').printAmountTable(data.resultReportTurnoverHeader);
            }
           

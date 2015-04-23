@@ -1,7 +1,7 @@
 function writeNewShopIDCookie(ShopID){
     localStorage.setItem('storageshop' , ShopID);
     console.log("cookie is chaing to: " + localStorage.getItem('storageshop'));
-    window.location.replace("dashboard.html");
+    window.location.replace(getCurrentHTMLFile());
 }
 
 function getCurrentShopID()
@@ -58,6 +58,25 @@ function getEmptyTimeArr(){
     timeArr.push(new Date("2012/02/01 18:00:00"));
     timeArr.push(new Date("2012/02/01 19:00:00"));
     timeArr.push(new Date("2012/02/01 20:00:00"));
+    
+    return timeArr;
+}
+
+function getEmptyTimeHourlArr(){
+    timeArr = [];
+    timeArr.push('8');
+    timeArr.push('9');
+    timeArr.push('10');
+    timeArr.push('11');
+    timeArr.push('12');
+    timeArr.push('13');
+    timeArr.push('14');
+    timeArr.push('15');
+    timeArr.push('16');
+    timeArr.push('17');
+    timeArr.push('18');
+    timeArr.push('19');
+    timeArr.push('20');
     
     return timeArr;
 }
@@ -149,6 +168,7 @@ function forgeteverything()
 {
     localStorage.setItem('storagerememberme', 'no');
     localStorage.removeItem('storageusername');
+    localStorage.removeItem('storagepw');
 }
 
 function getUserNameFromCookies()
@@ -166,4 +186,19 @@ function getUserNameFromCookies()
     }
     
     return usernamefromcookies;
+}
+
+function getPWFromCookies()
+{
+    var PWfromcookies;
+    
+    if(localStorage.getItem('storagerememberme') === "yes"){
+         PWfromcookies = localStorage.getItem('storagepw');
+    }
+    else
+    {
+        PWfromcookies = "";
+    }
+    
+    return PWfromcookies;
 }

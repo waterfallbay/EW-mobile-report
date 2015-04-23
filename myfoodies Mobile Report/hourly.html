@@ -262,7 +262,7 @@ $( document ).ready(function() {
     var finalcheckoutdatetimeminute;
     var finalcheckindatetimehour;
     var finalcheckoutdatetimehour;
-    var emptytimeArr = getEmptyTimeArr();
+    var emptytimeHourlyArr = getEmptyTimeHourlArr();
     
     $.ajax(
     {
@@ -288,15 +288,15 @@ $( document ).ready(function() {
            if(data.RptGeneralDetailList == null)
            {
                maxMoney = 2000;
-               timeArr = emptytimeArr;
+               timeArr = emptytimeHourlyArr;
                moneyArr = [0];
                amtArr = [0];
            }
           else{
               
-              if(data.RptGeneralDetailList[0] === "undefined"){
+              if(data.RptGeneralDetailList.length == 0){
                       maxMoney = 2000;
-                      timeArr = emptytimeArr;
+                      timeArr = emptytimeHourlyArr;
                       moneyArr = [0];
               }
               else {
@@ -313,7 +313,7 @@ $( document ).ready(function() {
           
           createChart(timeArr, moneyArr, amtArr, maxMoney);
           
-          if(data.SelectedTxSalesHeaderList !== null){
+          if(data.RptGeneralDetailList != ""){
               $('#amount-table').printAmountTable(data.resultReportTurnoverHeader);
            }
           

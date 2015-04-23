@@ -303,7 +303,8 @@ $( document ).ready(function() {
                $( "#nodata" ).fadeIn(1500);
            }
           else{
-              if(data.rptTurnoverMaster[0] === "undefined"){
+              
+              if(data.rptTurnoverMaster.RptTxSalesDetailCategoryList.length == 0){
                       maxMoney = 8000;
                       timeArr = emptytimeArr;
                       moneyArr = [0];
@@ -340,7 +341,7 @@ $( document ).ready(function() {
           
           
           
-          if(data.rptTurnoverMaster !== null){
+          if(data.rptTurnoverMaster.RptTxSalesDetailCategoryList.length > 0){
               $('#amount-table').printAmountTable(data.resultReportTurnoverHeader);
            }
           

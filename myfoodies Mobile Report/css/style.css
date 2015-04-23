@@ -120,11 +120,11 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 .wrapper .table-responsive{ border:none;}
 .graph-data>thead>tr>th, .graph-data>tbody>tr>th, .graph-data>tfoot>tr>th, .graph-data>thead>tr>td, .graph-data>tbody>tr>td, .graph-data>tfoot>tr>td{ border-top:none; font-size:24px; color:#4e4e4d;}
 .graph-data>tbody>tr>td:nth-child(2n){ text-align:right;}
-.graph-data>tbody>tr>td span{ font-size:24px; color:#fff; background-color:#c99854; display:block; padding:0 10px;}
-.graph-data>tbody>tr>td span.large{ background-color:#c99854; padding:15px; color:#fff; font-size:30px; display:block;}
+.graph-data>tbody>tr>td span{ font-size:24px; color:#07405c; background-color:#84ccc9; display:block; padding:0 10px;}
+.graph-data>tbody>tr>td span.large{ background-color:#1896d4; padding:15px; color:#fff; font-size:30px; display:block;}
 .graph-data>tbody>tr>td span.large-txt{ background:none; color:#4e4e4d; padding-right:0;}
 #mydataTable{}
-#mydataTable thead{ background-color:#c99854; color:#fff;}
+#mydataTable thead{ background-color:#f3ac32; color:#fff;}
 #mydataTable thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTable tbody{ background-color:#e7e7e7;}
 #mydataTable tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}

@@ -40,10 +40,10 @@
     	<div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
         	<form action="http://ewpos.io/Account/LogOnRest/" class="login" id="loginform">
             	<div class="form-group">
-                	<input class="form-control" type="text" name="UserName" value="everyware128r" placeholder="" id="loginusername">
+                	<input class="form-control" type="text" name="UserName" value="" placeholder="" id="loginusername">
                 </div>
                 <div class="form-group">
-                	<input class="form-control" type="password" name="Password"  value="gk38hs91" placeholder="" id="loginpassword">
+                	<input class="form-control" type="password" name="Password"  value="" placeholder="" id="loginpassword">
                 </div>
                 <div class="form-group form-check">
                 	<input id="remembermecheck" type="checkbox" >
@@ -74,17 +74,13 @@ function onDeviceReady() {
     else{
           getLangText(localStorage.getItem('storagelang'));
     }
-	var testtype = (typeof window.localStorage.getItem("storagelang"));
-    var test = window.localStorage.getItem("storagelang");
-	$("#storage").html(test);
-	$("#storagetype").html(testtype);
-    console.log("local storage text: "+test);
 }
  
  
 $(document).ready(function(){
 
       $('#loginusername').attr('value' , getUserNameFromCookies());
+      $('#loginpassword').attr('value' , getPWFromCookies());
       
       if(localStorage.getItem('storagerememberme') === "yes") {
           $('#remembermecheck').attr('checked', true);
@@ -119,6 +115,7 @@ jQuery(document).submit(function(e){
                     if($('#remembermecheck').prop('checked')){
                         localStorage.setItem('storagerememberme', 'yes');
                         localStorage.setItem('storageusername',  $("#loginusername").val());
+                        localStorage.setItem('storagepw',  $("#loginpassword").val());
                     }
                     else{
                         forgeteverything();

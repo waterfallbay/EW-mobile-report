@@ -291,12 +291,13 @@ $( document ).ready(function() {
            }
           else{
               
-              if(data.SelectedTxSalesHeaderList[0] === "undefined"){
+              if(data.SelectedTxSalesHeaderList.length == 0){
                       maxMoney = 8000;
                       timeArr = emptytimeArr;
                       moneyArr = [0];
               }
               else {
+                          console.log ("length: " + data.SelectedTxSalesHeaderList[0]);
                           maxMoney = parseInt(data.SelectedTxSalesHeaderList[data.SelectedTxSalesHeaderList.length-1].TotalAmountRunningSum+500);
 
                           $.each(data.SelectedTxSalesHeaderList, function(i, item) {
@@ -359,7 +360,7 @@ $( document ).ready(function() {
           
           createChart(moneyArr, timeArr, maxMoney);
           
-          if(data.SelectedTxSalesHeaderList !== null){
+          if(data.SelectedTxSalesHeaderList != ""){
               $('#amount-table').printAmountTable(data.TotalSum.SumAmount, data.SelectedPeriodSumModelList);
            }
           
