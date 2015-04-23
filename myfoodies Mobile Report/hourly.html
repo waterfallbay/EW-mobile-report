@@ -135,6 +135,8 @@
             </table>
         </div>
     </div>
+    <div class="nodata" id="nodata"></div>
+    <div class="nodata" id="nodata2"></div>
 </section>
     <!-- section chartview end -->
     <!-- section listview start -->
@@ -291,6 +293,8 @@ $( document ).ready(function() {
                timeArr = emptytimeHourlyArr;
                moneyArr = [0];
                amtArr = [0];
+               
+               $("#nodata2").fadeIn(1500);
            }
           else{
               
@@ -298,6 +302,8 @@ $( document ).ready(function() {
                       maxMoney = 2000;
                       timeArr = emptytimeHourlyArr;
                       moneyArr = [0];
+                  
+                      $("#nodata").fadeIn(1500);
               }
               else {
                       $.each(data.RptGeneralDetailList, function(i, item) {

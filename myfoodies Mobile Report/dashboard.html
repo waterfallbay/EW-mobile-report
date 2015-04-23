@@ -121,6 +121,7 @@
         <!-- start chart -->
         <div class="chart-wrapper">
            <div id="chart" style="width:100%; height: 230px"></div>
+           
         </div>
         <!-- end chart -->
         <div class="table-responsive">
@@ -133,6 +134,8 @@
                 </tbody>
             </table>
         </div>
+        <div class="nodata" id="nodata"></div>
+        <div class="nodata" id="nodata2"></div>
     </div>
 </section>
     <!-- section chartview end -->
@@ -279,15 +282,17 @@ $( document ).ready(function() {
           selectedworkdayMonth = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getMonth();
           selectedworkdayYear = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getFullYear();
           
-            selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
-            $("#selectedworkday").text(selectedworkdaystr);
-            $("#selectedworkday2").text(selectedworkdaystr);
+           selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
+           $("#selectedworkday").text(selectedworkdaystr);
+           $("#selectedworkday2").text(selectedworkdaystr);
          
            if(data.SelectedTxSalesHeaderList == null)
            {
                maxMoney = 8000;
                timeArr = emptytimeArr;
                moneyArr = [0];
+               
+               $("#nodata2").fadeIn(1500);
            }
           else{
               
@@ -295,6 +300,8 @@ $( document ).ready(function() {
                       maxMoney = 8000;
                       timeArr = emptytimeArr;
                       moneyArr = [0];
+                      
+                      $("#nodata").fadeIn(1500);
               }
               else {
                           console.log ("length: " + data.SelectedTxSalesHeaderList[0]);

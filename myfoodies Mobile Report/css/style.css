@@ -56,6 +56,8 @@ h1.logo span{ margin:20px 0px 0px 0px; display:block; text-align:center; color:#
 .f-logo{ position:relative; float:right; width:145px;}
 
 @media all {
+/*nodata*/
+.nodata{position:absolute;width:280px;top:50%;left:50%;display:block;background-color:#ff6800;color:#fff;margin-left:-140px;text-align:center;padding:2px 2px 2px 2px;display:none;}
 /*push-menu*/
 header{ background-color:#1896d4;}
 .nav>li{ border-bottom:solid 1px #9fc9dd;}
@@ -124,7 +126,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 .graph-data>tbody>tr>td span.large{ background-color:#1896d4; padding:15px; color:#fff; font-size:30px; display:block;}
 .graph-data>tbody>tr>td span.large-txt{ background:none; color:#4e4e4d; padding-right:0;}
 #mydataTable{}
-#mydataTable thead{ background-color:#f3ac32; color:#fff;}
+#mydataTable thead{ background-color:#ff6800; color:#fff;}
 #mydataTable thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTable tbody{ background-color:#e7e7e7;}
 #mydataTable tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}

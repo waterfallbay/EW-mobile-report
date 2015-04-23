@@ -48,6 +48,8 @@ var zh = {
     catperformance: "分類銷售表現",
     chartitemamt: "銷售金額",
     chartitemno: "銷售數量",
+    nodata: "沒有數據，請檢查店舖的網絡連線。",
+    nodata2: "不能連接服務器，請檢查你的網連線。",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -117,6 +119,8 @@ var en = {
     catperformance: "Sales by Category",
     chartitemamt: "amount",
     chartitemno: "quantity",
+    nodata: "No data retrieved, please check the internet connection of this store.",
+    nodata2: "Cannot connect to remote service, please check your internet connection.",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
@@ -162,6 +166,7 @@ var takeaway;
 var catperformance;
 var chartitemamt;
 var chartitemno;
+var nodata;
 
 function getLangText(lang){
 
@@ -245,6 +250,10 @@ function getLangText(lang){
     catperformance = currentlang.catperformance;
     chartitemamt = currentlang.chartitemamt;
     chartitemno = currentlang.chartitemno;
+    
+    //nodata
+    $('#nodata').html(currentlang.nodata);
+    $('#nodata2').html(currentlang.nodata2);
 }
 
 function decidecurrentlang(lang)

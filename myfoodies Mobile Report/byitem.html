@@ -140,6 +140,8 @@
             </table>
         </div>
     </div>
+    <div class="nodata" id="nodata"></div>
+    <div class="nodata" id="nodata2"></div>
 </section>
     <!-- section chartview end -->
     <!-- section listview start -->
@@ -295,11 +297,13 @@ $( document ).ready(function() {
            if(data.RptGeneralDetailList == null)
            {
                itemArr = [0];
+               $("#nodata2").fadeIn(1500);
            }
           else{
               
               if(data.RptGeneralDetailList.length == 0){
-                      itemArr = [0];
+                  itemArr = [0];
+                  $("#nodata").fadeIn(1500);
               }
               else {
                       $.each(data.RptGeneralDetailList, function(i, item) {
