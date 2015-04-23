@@ -315,7 +315,7 @@ $( document ).ready(function() {
                           itemArr2.push(itemDetailArr2);
                           
                           //create table view array
-                          var tableDetailArr = [item.ItemName , item.ItemCode , item.ItemCount , item.ItemValue];
+                          var tableDetailArr = [item.ItemName , item.ItemCode , item.ItemCount , "$"+kendo.format('{0:n}', item.ItemValue)];
             
                           //push value to table view
                           tableArr.push(tableDetailArr);

@@ -130,7 +130,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTable thead{ background-color:#ff6800; color:#fff;}
 #mydataTable thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTable tbody{ background-color:#e7e7e7;}
-#mydataTable tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}
+#mydataTable tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
 #mydataTable tbody td:focus{ outline:none !important;}
 #mydataTable_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}
     
@@ -139,7 +139,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTableCashier thead{ background-color:#ff6800; color:#fff;}
 #mydataTableCashier thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTableCashier tbody{ background-color:#e7e7e7;}
-#mydataTableCashier tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}
+#mydataTableCashier tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
 #mydataTableCashier tbody td:focus{ outline:none !important;}
 #mydataTableCashier_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}  
     
@@ -147,7 +147,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTablePayin thead{ background-color:#ff6800; color:#fff;}
 #mydataTablePayin thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTablePayin tbody{ background-color:#e7e7e7;}
-#mydataTablePayin tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}
+#mydataTablePayin tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
 #mydataTablePayin tbody td:focus{ outline:none !important;}
 #mydataTablePayin_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}    
   
@@ -155,7 +155,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTablePayout thead{ background-color:#ff6800; color:#fff;}
 #mydataTablePayout thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTablePayout tbody{ background-color:#e7e7e7;}
-#mydataTablePayout tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}
+#mydataTablePayout tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
 #mydataTablePayout tbody td:focus{ outline:none !important;}
 #mydataTablePayout_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;} 
     
@@ -163,7 +163,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTableDiscount thead{ background-color:#ff6800; color:#fff;}
 #mydataTableDiscount thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTableDiscount tbody{ background-color:#e7e7e7;}
-#mydataTableDiscount tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:12px;}
+#mydataTableDiscount tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
 #mydataTableDiscount tbody td:focus{ outline:none !important;}
 #mydataTableDiscount_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;} 
     

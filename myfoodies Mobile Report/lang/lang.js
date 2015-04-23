@@ -69,6 +69,7 @@ var zh = {
         ReportHourlySales : "每小時報表",
         ReportSales : "營業報表",
         CashierReport : "收銀員報表",
+        PaymentMethods : "付款辦法報表",
         menuheader1 : "總銷售報表",
         menuheader2 : "每小時報表",
         menuheader3 : "鎖貨報表",
@@ -147,6 +148,7 @@ var en = {
         ReportHourlySales : "Hourly Sales",
         ReportSales : "Summary",
         CashierReport : "Cashier Log",
+        PaymentMethods : "Payment Methods",
         menuheader1 : "All Day Sales",
         menuheader2 : "Houly Sales",
         menuheader3 : "Sales by Item",
@@ -192,17 +194,18 @@ function getLangText(lang){
     console.log ("current lang"+lang);
     //dashboard page
     
-    $('#menu1').html(currentlang.menu.AllTransactions);
-    $('#menu2').html(currentlang.menu.CancelItems);
+    $('#AllTransactions').html(currentlang.menu.AllTransactions);
+    $('#CancelItems').html(currentlang.menu.CancelItems);
     $('#menu3').html(currentlang.menu.SplitSales);
     $('#menu4').html(currentlang.menu.ChangeTable);
-    $('#menu5').html(currentlang.menu.ChaseItem);
+    $('#ChaseItem').html(currentlang.menu.ChaseItem);
     $('#menu6').html(currentlang.menu.ReportSalesHeaderList);
-    $('#menu7').html(currentlang.menu.ReportSalesItemList);
-    $('#menu8').html(currentlang.menu.ReportHourlySales);
-    $('#menu9').html(currentlang.menu.ReportDiscountSales);
-    $('#menu10').html(currentlang.menu.ReportSales);
+    $('#ReportSalesItemList').html(currentlang.menu.ReportSalesItemList);
+    $('#ReportHourlySales').html(currentlang.menu.ReportHourlySales);
+    $('#ReportDiscountSales').html(currentlang.menu.ReportDiscountSales);
+    $('#ReportSales').html(currentlang.menu.ReportSales);
     $('#menu11').html(currentlang.menu.CashierReport);
+    $('#PaymentMethods').html(currentlang.menu.PaymentMethods);
     $('#menuheader1').html(currentlang.menu.menuheader1);
     $('#menuheader2').html(currentlang.menu.menuheader2);
     $('#menuheader3').html(currentlang.menu.menuheader3);

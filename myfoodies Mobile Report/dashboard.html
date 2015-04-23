@@ -312,7 +312,7 @@ $( document ).ready(function() {
 
                               formattedcheckindatetime = new Date(parseInt(item.CheckinDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
                               formattedcheckoutdatetime = new Date(parseInt(item.CheckoutDatetime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
-                              formattedTotalAmount = "$"+item.AmountTotal;
+                              formattedTotalAmount = "$"+kendo.format('{0:n}', item.AmountTotal);
 
                               if(parseInt(formattedcheckindatetime.getMinutes()) <10 ){
                                   finalcheckindatetimeminute = "0"+formattedcheckindatetime.getMinutes();
@@ -459,7 +459,10 @@ function createChart(moneyArr , timeArr , maxMoney) {
         series: [{
             name: chartsalestext,
             data: moneyArr,
-            color: "#f3ac32"
+            color: "#f3ac32",
+            markers: {
+                size: 16,
+            }          
         }],
         valueAxis: {
             max: maxMoney,
