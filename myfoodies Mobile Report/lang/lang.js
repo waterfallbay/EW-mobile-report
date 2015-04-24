@@ -8,6 +8,7 @@ var zh = {
     hourlytablenet : "= 營業淨額",
     hourlytableunbilled : "未結賬單",
     hourlytexttitle : "每小時報表",
+    canceltexttitle: "取消項目",
     byitemtexttitle : "銷貨情況",
     selectRestaurant : "選擇分店",
     changelang : "English",
@@ -57,6 +58,9 @@ var zh = {
     payin: "代收",
     payout: "代支",
     discount: "折扣",
+    timetext: "時間",
+    cancelnametext: "項目",
+    cancelreasontext: "原因",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -73,12 +77,14 @@ var zh = {
         menuheader1 : "總銷售報表",
         menuheader2 : "每小時報表",
         menuheader3 : "鎖貨報表",
-        menuheader4 : "營業報表"
+        menuheader4 : "營業報表",
+        menuheader5 : "取消項目報表"
     }
 };
 
 var en = {
     dashboardtexttitle : "All Day Sales",
+    canceltexttitle: "Cancelled Item",
     hourlytexttitle : "Hourly Sales",
     hourlytablesectiontotal : "Total Sales",
     hourlytablediscount : "- Discount",
@@ -111,7 +117,7 @@ var en = {
     itemname: "Name",
     itemcode: "Code",
     itemcount: "Qty.",
-    cashierstaff: "Staff.",
+    cashierstaff: "Staff",
     cashier: "Cashier",
     todaytext: "Today",
     yesterdaytext: "Yesterday",
@@ -136,6 +142,9 @@ var en = {
     payin: "Pay-in",
     payout: "Pay-out",
     discount: "Discount",
+    timetext: "Time",
+    cancelnametext: "Item",
+    cancelreasontext: "Reason",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
@@ -152,7 +161,8 @@ var en = {
         menuheader1 : "All Day Sales",
         menuheader2 : "Houly Sales",
         menuheader3 : "Sales by Item",
-        menuheader4 : "Summary"
+        menuheader4 : "Summary",
+        menuheader5 : "Cancelled Item"
     }
     
 };
@@ -187,6 +197,9 @@ var cancelleditem;
 var cancelledbill;
 var cashier;
 var itemtext;
+var timetext;
+var cancelnametext;
+var cancelreasontext;
 
 function getLangText(lang){
 
@@ -210,12 +223,15 @@ function getLangText(lang){
     $('#menuheader2').html(currentlang.menu.menuheader2);
     $('#menuheader3').html(currentlang.menu.menuheader3);
     $('#menuheader4').html(currentlang.menu.menuheader4);
+    $('#menuheader5').html(currentlang.menu.menuheader5);
     $('#dashboardtexttitle1').html(currentlang.dashboardtexttitle);
     $('#dashboardtexttitle2').html(currentlang.dashboardtexttitle);
     $('#hourlytexttitle1').html(currentlang.hourlytexttitle);
     $('#hourlytexttitle2').html(currentlang.hourlytexttitle);
     $('#byitemtexttitle1').html(currentlang.byitemtexttitle);
     $('#byitemtexttitle2').html(currentlang.byitemtexttitle);
+    $('#canceltexttitle1').html(currentlang.canceltexttitle);
+    $('#canceltexttitle2').html(currentlang.canceltexttitle);
     $('#selectRestaurant').html(currentlang.selectRestaurant);
     $('#changelang').html(currentlang.changelang);
     $('#logout').html(currentlang.logout);
@@ -279,8 +295,12 @@ function getLangText(lang){
     $('#payintext').html(currentlang.payin);
     $('#payouttext').html(currentlang.payout);
     $('#discounttext').html(currentlang.discount);
+    $('#cattext').html(currentlang.catperformance);
     
-    
+    //cancel page
+    timetext = currentlang.timetext;
+    cancelnametext = currentlang.cancelnametext;
+    cancelreasontext = currentlang.cancelreasontext;
     
     //nodata
     $('#nodata').html(currentlang.nodata);

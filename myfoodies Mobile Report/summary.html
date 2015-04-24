@@ -177,6 +177,12 @@
             	
             </table>
         </div>
+        <div id="cattext">分類銷售表現</div>
+        <div class="table-responsive">
+        	<table id="mydataTableCat" class="table table-condensed" style="width:100%">
+            	
+            </table>
+        </div>
     </div>
 </section>
 <!-- section listview end --> 
@@ -302,6 +308,8 @@ $( document ).ready(function() {
     var tableDetailPayinArr = [];
     var tableDetailPayoutArr = [];
     var tableDetailDiscountArr = [];
+    var tableDetailCatArr = [];
+    var tableCatArr = [];
     
     $.ajax(
     {
@@ -384,6 +392,13 @@ $( document ).ready(function() {
                           tableDetailDiscountArr = [itm.ItemName , itm.ItemCount , "$"+kendo.format('{0:n}', itm.ItemValue)];
                           tableDiscountArr.push(tableDetailDiscountArr);
                       });
+                  
+                      $.each(data.rptTurnoverMaster.RptTxSalesDetailCategoryList, function(i, itm) {
+
+                          //create table view array
+                          tableDetailCatArr = [itm.ItemName , itm.ItemCount , "$"+kendo.format('{0:n}', itm.ItemValue)];
+                          tableCatArr.push(tableDetailCatArr);
+                      });
 
                       createPieChart(itemArr , itemArrNo2 , itemArrName2 , itemArrValue2);
               }
@@ -451,6 +466,21 @@ $( document ).ready(function() {
               "info": false,
               "language": datatablelang
             });
+          
+            //create jquery datatable discount
+          $('#mydataTableCat').dataTable({
+             "data": tableCatArr,
+             "columns": [
+                { "title": itemtext },
+                { "title": itemcount },
+                { "title": ttamount },
+                ],
+              "paging": false,
+              "bFilter": false,
+              "info": false,
+              "language": datatablelang
+            });
+          
       },
       error: function (xhr) {
              //alert(xhr.responseText);
@@ -562,7 +592,7 @@ function createPieChart(dataArr, dataArrNo2, dataArrName2, dataArrValue2)
                     color: "#81c71a",
                     tooltip: {
                         visible: true,
-                        template: "$#= kendo.format('{0:n}', value) #"
+                        template: "#= category #: $#= kendo.format('{0:n}', value) #"
                     },
                     gap: 0
                 },  {
@@ -573,7 +603,7 @@ function createPieChart(dataArr, dataArrNo2, dataArrName2, dataArrValue2)
                     axis: "no.",
                     tooltip: {
                         visible: true,
-                        template: "#= value #"
+                        template: "#= category #: #= value #"
                     },
                     markers: {
                         size: 12,

@@ -127,7 +127,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 .graph-data>tbody>tr>td span.large-txt{ background:none; color:#4e4e4d; padding-right:0;}
     
 #mydataTable{}
-#mydataTable thead{ background-color:#ff6800; color:#fff;}
+#mydataTable thead{ background-color:#efa11f; color:#fff;}
 #mydataTable thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTable tbody{ background-color:#e7e7e7;}
 #mydataTable tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
@@ -136,7 +136,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
     
     
 #mydataTableCashier{}
-#mydataTableCashier thead{ background-color:#ff6800; color:#fff;}
+#mydataTableCashier thead{ background-color:#efa11f; color:#fff;}
 #mydataTableCashier thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTableCashier tbody{ background-color:#e7e7e7;}
 #mydataTableCashier tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
@@ -144,7 +144,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTableCashier_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}  
     
 #mydataTablePayin{}
-#mydataTablePayin thead{ background-color:#ff6800; color:#fff;}
+#mydataTablePayin thead{ background-color:#efa11f; color:#fff;}
 #mydataTablePayin thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTablePayin tbody{ background-color:#e7e7e7;}
 #mydataTablePayin tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
@@ -152,7 +152,7 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTablePayin_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}    
   
 #mydataTablePayout{}
-#mydataTablePayout thead{ background-color:#ff6800; color:#fff;}
+#mydataTablePayout thead{ background-color:#efa11f; color:#fff;}
 #mydataTablePayout thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTablePayout tbody{ background-color:#e7e7e7;}
 #mydataTablePayout tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
@@ -160,12 +160,20 @@ header ul.head-link li>ul.dropdown-menu>li>a:hover, header ul.head-link li>ul.dr
 #mydataTablePayout_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;} 
     
 #mydataTableDiscount{}
-#mydataTableDiscount thead{ background-color:#ff6800; color:#fff;}
+#mydataTableDiscount thead{ background-color:#efa11f; color:#fff;}
 #mydataTableDiscount thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
 #mydataTableDiscount tbody{ background-color:#e7e7e7;}
 #mydataTableDiscount tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
 #mydataTableDiscount tbody td:focus{ outline:none !important;}
 #mydataTableDiscount_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;} 
+
+#mydataTableCat{}
+#mydataTableCat thead{ background-color:#71b441; color:#fff;}
+#mydataTableCat thead td{ cursor:pointer; outline:none; padding:10px 10px; font-size:14px;}
+#mydataTableCat tbody{ background-color:#e7e7e7;}
+#mydataTableCat tbody td{ outline:none; color:#424242; vertical-align:middle; border-top-color:#434343; font-size:14px;}
+#mydataTableCat tbody td:focus{ outline:none !important;}
+#mydataTableCat_filter, #dataTable_wrapper .dataTables_length, #dataTable_info, #dataTable_paginate{ display:none;}     
     
 .language:hover, .login input[type='submit']:hover{ background-color:#385655; color:#fff; transition: all 0.1s ease;
  -webkit-transition: all 0.1s ease; -moz-transition: all 0.1s ease;}
