@@ -9,6 +9,9 @@ var zh = {
     hourlytableunbilled : "未結賬單",
     hourlytexttitle : "每小時報表",
     canceltexttitle: "取消項目",
+    chasetexttitle: "追單報表",
+    discounttexttitle: "折扣報表",
+    paymenttexttitle: "付款辦法",
     byitemtexttitle : "銷貨情況",
     selectRestaurant : "選擇分店",
     changelang : "English",
@@ -51,16 +54,22 @@ var zh = {
     chartitemamt: "銷售金額",
     chartitemno: "銷售數量",
     nodata: "沒有數據，請檢查店舖的網絡連線。",
-    nodata2: "不能連接服務器，請檢查你的網連線。",
+    nodata2: "沒有數據，請檢查店舖的網絡連線。",
     cancelleditem: "取消項目",
     cancelledbill: "取消單據",
     itemtext: "項目",
     payin: "代收",
     payout: "代支",
     discount: "折扣",
+    memberdiscount: "會員折扣",
     timetext: "時間",
     cancelnametext: "項目",
     cancelreasontext: "原因",
+    chasenocounttext: "次數",
+    paymentmethodamt: "按交易金額",
+    paymentmethodcount: "按交易次數",
+    ttmethod: "辦法",
+    ttcount: "次數",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -78,13 +87,19 @@ var zh = {
         menuheader2 : "每小時報表",
         menuheader3 : "鎖貨報表",
         menuheader4 : "營業報表",
-        menuheader5 : "取消項目報表"
+        menuheader5 : "取消項目報表",
+        menuheader6 : "追單報表",
+        menuheader7 : "折扣報表",
+        menuheader8 : "付款辦法報表"
     }
 };
 
 var en = {
     dashboardtexttitle : "All Day Sales",
     canceltexttitle: "Cancelled Item",
+    chasetexttitle: "Await Order",
+    discounttexttitle: "Bill Discount",
+    paymenttexttitle: "Payment Methods",
     hourlytexttitle : "Hourly Sales",
     hourlytablesectiontotal : "Total Sales",
     hourlytablediscount : "- Discount",
@@ -142,15 +157,21 @@ var en = {
     payin: "Pay-in",
     payout: "Pay-out",
     discount: "Discount",
+    memberdiscount: "Member Discount",
     timetext: "Time",
     cancelnametext: "Item",
     cancelreasontext: "Reason",
+    chasenocounttext: "Count",
+    paymentmethodamt: "By Sales Amount",
+    paymentmethodcount: "By Count",
+    ttmethod: "Method",
+    ttcount: "Count",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
         SplitSales : "Split Table Log",
         ChangeTable : "Change Table Log",
-        ChaseItem : "Chase Order Log",
+        ChaseItem : "Await Order Log",
         ReportSalesHeaderList : "Transaction List",
         ReportSalesItemList : "Sales by Item",
         ReportDiscountSales : "Bill Discount Log",
@@ -162,7 +183,10 @@ var en = {
         menuheader2 : "Houly Sales",
         menuheader3 : "Sales by Item",
         menuheader4 : "Summary",
-        menuheader5 : "Cancelled Item"
+        menuheader5 : "Cancelled Item",
+        menuheader6 : "Await Order",
+        menuheader7 : "Bill Discount",
+        menuheader8 : "Payment Methods"
     }
     
 };
@@ -224,6 +248,9 @@ function getLangText(lang){
     $('#menuheader3').html(currentlang.menu.menuheader3);
     $('#menuheader4').html(currentlang.menu.menuheader4);
     $('#menuheader5').html(currentlang.menu.menuheader5);
+    $('#menuheader6').html(currentlang.menu.menuheader6);
+    $('#menuheader7').html(currentlang.menu.menuheader7);
+    $('#menuheader8').html(currentlang.menu.menuheader8);
     $('#dashboardtexttitle1').html(currentlang.dashboardtexttitle);
     $('#dashboardtexttitle2').html(currentlang.dashboardtexttitle);
     $('#hourlytexttitle1').html(currentlang.hourlytexttitle);
@@ -232,6 +259,12 @@ function getLangText(lang){
     $('#byitemtexttitle2').html(currentlang.byitemtexttitle);
     $('#canceltexttitle1').html(currentlang.canceltexttitle);
     $('#canceltexttitle2').html(currentlang.canceltexttitle);
+    $('#chasetexttitle1').html(currentlang.chasetexttitle);
+    $('#chasetexttitle2').html(currentlang.chasetexttitle);
+    $('#discounttexttitle1').html(currentlang.discounttexttitle);
+    $('#discounttexttitle2').html(currentlang.discounttexttitle);
+    $('#paymenttexttitle1').html(currentlang.paymenttexttitle);
+    $('#paymenttexttitle2').html(currentlang.paymenttexttitle);
     $('#selectRestaurant').html(currentlang.selectRestaurant);
     $('#changelang').html(currentlang.changelang);
     $('#logout').html(currentlang.logout);
@@ -301,6 +334,19 @@ function getLangText(lang){
     timetext = currentlang.timetext;
     cancelnametext = currentlang.cancelnametext;
     cancelreasontext = currentlang.cancelreasontext;
+    
+    //chase order
+    chasenocount = currentlang.chasenocounttext;
+    
+    //Discount Log
+    memberdiscount = currentlang.memberdiscount;
+    discount = currentlang.discount;
+    
+    //Payment Methods
+    paymentmethodamt = currentlang.paymentmethodamt;
+    paymentmethodcount = currentlang.paymentmethodcount;
+    ttmethod = currentlang.ttmethod;
+    ttcount = currentlang.ttcount;
     
     //nodata
     $('#nodata').html(currentlang.nodata);

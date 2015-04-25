@@ -276,6 +276,7 @@ $( document ).ready(function() {
       },
       crossDomain: true,
       success: function(data){
+          console.log("http://ewpos.io/Report/AllTransactionsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay())
           console.log("final ajax shopID: "+thisShopId);
           //update bottom table on dashboard
           
@@ -368,7 +369,7 @@ $( document ).ready(function() {
           
           createChart(moneyArr, timeArr, maxMoney);
           
-          if(data.SelectedTxSalesHeaderList != ""){
+          if(data.SelectedTxSalesHeaderList != null){
               $('#amount-table').printAmountTable(data.TotalSum.SumAmount, data.SelectedPeriodSumModelList);
            }
           

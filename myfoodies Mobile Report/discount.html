@@ -55,7 +55,7 @@
     <div class="navbar-top">
     <ul class="head-link">
     <li><a href="#"><figure><img src="images/icon-book.png" alt="" class="img-responsive"></figure></a></li>
-    <li><a href="#" id="menuheader5"></a></li>
+    <li><a href="#" id="menuheader7"></a></li>
     </ul>
     <ul class="head-link head-link-right" id="buttonul">
     <li><a href="#" id="toggle-list-view"><figure class="sm"><img src="images/icon-align.png" alt="" class="img-responsive"></figure></a></li>
@@ -118,7 +118,7 @@
 	<div class="container">
     	<h1 id="selectedworkday">&nbsp;</h1>
         <h1 class="title" id="shopName">&nbsp;</h1>
-        <h4 id="canceltexttitle1"></h4>
+        <h4 id="discounttexttitle1"></h4>
         <div class="clearfix"></div>
         <!-- start chart -->
         <div class="chart-wrapper">
@@ -145,7 +145,7 @@
 	<div class="container">
     	<h1 id="selectedworkday2">&nbsp;</h1>
         <h1 class="title" id="shopName2">&nbsp;</h1>
-        <h4 id="canceltexttitle2"></h4>
+        <h4 id="discounttexttitle2"></h4>
         <div class="clearfix"></div>
         <div class="table-responsive">
         	<table id="mydataTable" class="table table-condensed" style="width:100%">
@@ -266,13 +266,13 @@ $( document ).ready(function() {
     var finalcheckindatetimehour;
     var finalcheckoutdatetimehour;
     var emptytimeHourlyArr = getEmptyTimeHourlArr();
-    var cancelItemNameArr = [];
-    var cancelItemValueArr = [];
+    var discountItemNameArr = [discount , memberdiscount];
+    var discountItemValueArr = [];
     
     $.ajax(
     {
       type: "GET",
-      url: "http://ewpos.io/Report/CancelItemsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
+      url: "http://ewpos.io/OtherReport/ReportDiscountSalesRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
@@ -290,7 +290,7 @@ $( document ).ready(function() {
             $("#selectedworkday").text(selectedworkdaystr);
             $("#selectedworkday2").text(selectedworkdaystr);
            
-           if(data.CancelItemDisplayGroupList == null)
+           if(data.resultReportTurnoverHeader == null)
            {
                maxMoney = 2000;
                timeArr = emptytimeHourlyArr;
@@ -301,7 +301,7 @@ $( document ).ready(function() {
            }
           else{
               
-              if(data.CancelItemDisplayGroupList.length == 0){
+              if(data.resultReportTurnoverHeader.length == 0){
                       maxMoney = 2000;
                       timeArr = emptytimeHourlyArr;
                       moneyArr = [0];
@@ -309,42 +309,26 @@ $( document ).ready(function() {
                       $("#nodata").fadeIn(1500);
               }
               else {
-                      $.each(data.CancelItemDisplayGroupList, function(i, item) {
-                          var cancelItemDetailArr = {category: item.GroupName , val: item.GroupCount};
-                          cancelItemNameArr.push(item.GroupName);
-                          cancelItemValueArr.push(item.GroupCount);
-                      });
-                  
-                      $.each(data.TxSalesDetailLogList, function(i, item) {
-                          
-                          formattedcheckindatetime = new Date(parseInt(item.LogDateTime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
-                          
-                          if(parseInt(formattedcheckindatetime.getMinutes()) <10 ){
-                              finalcheckindatetimeminute = "0"+formattedcheckindatetime.getMinutes();
-                          }
-                          else{
-                              finalcheckindatetimeminute = formattedcheckindatetime.getMinutes();
-                          }
-                          if(parseInt(formattedcheckindatetime.getHours()) <10 ){
-                              finalcheckindatetimehour = "0"+formattedcheckindatetime.getHours();
-                          }
-                          else{
-                              finalcheckindatetimehour = formattedcheckindatetime.getHours();
-                          }
-                          
-                          finalcheckindatetime = finalcheckindatetimehour+":"+finalcheckindatetimeminute;
-                          
-                          var tableDetailArr = [item.ReceiptNo , item.TableCode , finalcheckindatetime, item.ItemName, item.ResultSource, item.UserName];
-                          tableArr.push(tableDetailArr);
-                      });
+                      //push day discount
+                      discountItemValueArr.push(data.resultReportTurnoverHeader.DayDiscount);
+                      //push member discount
+                      discountItemValueArr.push(0);
+                      if (data.RptGeneralDetailList.length > 0)
+                      {
+                          $.each(data.RptGeneralDetailList, function(i, item) {
+
+                              var tableDetailArr = [item.ItemCode , "$"+kendo.format('{0:n}', item.ItemValue)];
+                              tableArr.push(tableDetailArr);
+                          });
+                      }
                       
               }
           }
           
-          createChart(cancelItemNameArr, cancelItemValueArr);
+          createChart(discountItemNameArr, discountItemValueArr);
           
-          if(data.SelectedPeriodSumModelList != null){
-              $('#amount-table').printAmountTable(data.SelectedPeriodSumModelList);
+          if(data.resultReportTurnoverHeader != null){
+              $('#amount-table').printAmountTable(data.resultReportTurnoverHeader);
            }
           
           
@@ -354,11 +338,7 @@ $( document ).ready(function() {
              "data": tableArr,
              "columns": [
                 { "title": invoiceno },
-                { "title": tableno },
-                { "title": timetext },
-                { "title": cancelnametext },
-                { "title": cancelreasontext },
-                { "title": cashierstaff}
+                { "title": ttamount },
                 ],
               "paging": false,
               "bFilter": false,
@@ -404,22 +384,24 @@ $( document ).ready(function() {
 
 (function($){
     $.fn.extend({
-        printAmountTable: function(timesectiondata) {
+        printAmountTable: function(thisdata) {
             
-            var thisumamount = 0;
-           
-            $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="total-wholeday">'+whodaytext+'</span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
-  
-            
-            
-            for (i = 0; i < timesectiondata.length; i++) { 
-                 $('#amount-table tr:last').after('<tr><td><span>'+timesectiondata[i].PeriodName+'</span></td><td><div id="timesectionspan'+i+'">&nbsp;</div></td></tr>');
-                 $('#timesectionspan'+i).text(timesectiondata[i].SumAmount);
-                
-                thisumamount = thisumamount + parseInt(timesectiondata[i].SumAmount);
-             }
-            
-            $("#WholeDaySum").text(thisumamount);
+            $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="hourly-table-section-total"></span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-discount"></span></td><td><div id="table-discount-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-servicecharge"></span></td><td><div id="table-servicecharge-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-decimal"></span></td><td><div id="table-decimal-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-net"></font> <font size="1">('+thisdata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-unbilled"></font> <font size="1">('+thisdata.UncloseTxCount+')</font></span></td><td><div id="table-unbilled-value"></div></td></tr>');
+            getLangText(window.localStorage.getItem('storagelang'));
+            $("#WholeDaySum").text(thisdata.DayTurnover).formatCurrency();
+            $("#table-discount-value").text(thisdata.DayDiscount).formatCurrency();
+            console.log("Discount:" + thisdata.DayDiscount);
+            $("#table-servicecharge-value").text(thisdata.DayServiceFee).formatCurrency();
+            $("#table-decimal-value").text(thisdata.DayRounding).formatCurrency();
+            console.log("Rounding:" + thisdata.DayRounding);
+            $("#table-net-value").text(thisdata.DayNetTurnoverAmount).formatCurrency();
+            $("#table-unbilled-value").text(thisdata.UncloseTxAmount).formatCurrency();
+      
             return;
         }
     });
@@ -441,13 +423,12 @@ function createChart(cancelItemNameArr, cancelItemValueArr)
                     color: "#efc028",
                     tooltip: {
                         visible: true,
-                        template: "#= category #: #= value #"
+                        template: "#= category #: $#= kendo.format('{0:n}', value)  #"
                     },
                 }],
                 valueAxes: [{
                     name: "amt",
                     min: 0,
-                    majorUnit: 1,
                     majorGridLines: {
                         visible: false
                     }
@@ -455,7 +436,6 @@ function createChart(cancelItemNameArr, cancelItemValueArr)
                 categoryAxis: {
                     categories: cancelItemNameArr,
                     labels: {
-                        rotation: -90,
                         step: 1,
                         skip: 0
                     },

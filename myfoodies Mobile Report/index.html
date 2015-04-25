@@ -110,7 +110,8 @@ jQuery(document).submit(function(e){
 
 				if (data.IsError == false){
 					$("#errortext").html("&nbsp;");
-		
+		            localStorage.removeItem('storageshop');
+                    localStorage.removeItem('storageworkday');
                     //check remember me is checked, if yes write cookies for rememberme, username and password
                     if($('#remembermecheck').prop('checked')){
                         localStorage.setItem('storagerememberme', 'yes');

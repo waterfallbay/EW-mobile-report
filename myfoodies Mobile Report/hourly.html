@@ -320,7 +320,7 @@ $( document ).ready(function() {
           
           createChart(timeArr, moneyArr, amtArr, maxMoney);
           
-          if(data.RptGeneralDetailList != ""){
+          if(data.RptGeneralDetailList != null){
               $('#amount-table').printAmountTable(data.resultReportTurnoverHeader);
            }
           
@@ -384,8 +384,8 @@ $( document ).ready(function() {
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-memberdiscount"></span></td><td><div id="table-memberdiscount-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-servicecharge"></span></td><td><div id="table-servicecharge-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-decimal"></span></td><td><div id="table-decimal-value"></div></td></tr>');
-            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-net"> <font size="1">('+thidata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
-            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-unbilled"> <font size="1">('+thidata.UncloseTxCount+')</font></span></td><td><div id="table-unbilled-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-net"></font> <font size="1">('+thidata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-unbilled"></font> <font size="1">('+thidata.UncloseTxCount+')</font></span></td><td><div id="table-unbilled-value"></div></td></tr>');
             getLangText(window.localStorage.getItem("storagelang"));
             $("#WholeDaySum").text(thidata.DayTurnover).formatCurrency();
             $("#table-discount-value").text(thidata.DayDiscount).formatCurrency();

@@ -55,7 +55,7 @@
     <div class="navbar-top">
     <ul class="head-link">
     <li><a href="#"><figure><img src="images/icon-book.png" alt="" class="img-responsive"></figure></a></li>
-    <li><a href="#" id="menuheader5"></a></li>
+    <li><a href="#" id="menuheader6"></a></li>
     </ul>
     <ul class="head-link head-link-right" id="buttonul">
     <li><a href="#" id="toggle-list-view"><figure class="sm"><img src="images/icon-align.png" alt="" class="img-responsive"></figure></a></li>
@@ -118,7 +118,7 @@
 	<div class="container">
     	<h1 id="selectedworkday">&nbsp;</h1>
         <h1 class="title" id="shopName">&nbsp;</h1>
-        <h4 id="canceltexttitle1"></h4>
+        <h4 id="chasetexttitle1"></h4>
         <div class="clearfix"></div>
         <!-- start chart -->
         <div class="chart-wrapper">
@@ -145,7 +145,7 @@
 	<div class="container">
     	<h1 id="selectedworkday2">&nbsp;</h1>
         <h1 class="title" id="shopName2">&nbsp;</h1>
-        <h4 id="canceltexttitle2"></h4>
+        <h4 id="chasetexttitle2"></h4>
         <div class="clearfix"></div>
         <div class="table-responsive">
         	<table id="mydataTable" class="table table-condensed" style="width:100%">
@@ -266,13 +266,13 @@ $( document ).ready(function() {
     var finalcheckindatetimehour;
     var finalcheckoutdatetimehour;
     var emptytimeHourlyArr = getEmptyTimeHourlArr();
-    var cancelItemNameArr = [];
-    var cancelItemValueArr = [];
+    var chaseItemNameArr = [];
+    var chaseItemValueArr = [];
     
     $.ajax(
     {
       type: "GET",
-      url: "http://ewpos.io/Report/CancelItemsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
+      url: "http://ewpos.io/Report/ChaseItemRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
@@ -290,7 +290,7 @@ $( document ).ready(function() {
             $("#selectedworkday").text(selectedworkdaystr);
             $("#selectedworkday2").text(selectedworkdaystr);
            
-           if(data.CancelItemDisplayGroupList == null)
+           if(data.SelectedPeriodSumModelList == null)
            {
                maxMoney = 2000;
                timeArr = emptytimeHourlyArr;
@@ -301,7 +301,7 @@ $( document ).ready(function() {
            }
           else{
               
-              if(data.CancelItemDisplayGroupList.length == 0){
+              if(data.SelectedPeriodSumModelList.length == 0){
                       maxMoney = 2000;
                       timeArr = emptytimeHourlyArr;
                       moneyArr = [0];
@@ -309,10 +309,10 @@ $( document ).ready(function() {
                       $("#nodata").fadeIn(1500);
               }
               else {
-                      $.each(data.CancelItemDisplayGroupList, function(i, item) {
-                          var cancelItemDetailArr = {category: item.GroupName , val: item.GroupCount};
-                          cancelItemNameArr.push(item.GroupName);
-                          cancelItemValueArr.push(item.GroupCount);
+                      $.each(data.SelectedPeriodSumModelList, function(i, item) {
+                          
+                          chaseItemNameArr.push(item.PeriodName);
+                          chaseItemValueArr.push(item.SumAmount);
                       });
                   
                       $.each(data.TxSalesDetailLogList, function(i, item) {
@@ -341,7 +341,7 @@ $( document ).ready(function() {
               }
           }
           
-          createChart(cancelItemNameArr, cancelItemValueArr);
+          createChart(chaseItemNameArr, chaseItemValueArr);
           
           if(data.SelectedPeriodSumModelList != null){
               $('#amount-table').printAmountTable(data.SelectedPeriodSumModelList);
@@ -357,7 +357,7 @@ $( document ).ready(function() {
                 { "title": tableno },
                 { "title": timetext },
                 { "title": cancelnametext },
-                { "title": cancelreasontext },
+                { "title": chasenocount },
                 { "title": cashierstaff}
                 ],
               "paging": false,

@@ -202,3 +202,23 @@ function getPWFromCookies()
     
     return PWfromcookies;
 }
+
+function getPieChartPadding(num)
+{
+    var padding;
+    
+    if(num <= 3)
+    {
+        padding = 30;     
+    }
+    else if(num > 3 && num <=6)
+    {
+        padding = 60;
+    }
+    else if (num > 6)
+    {
+        padding = 70;
+    }
+    
+    return padding;
+}

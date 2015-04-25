@@ -15,6 +15,7 @@
     <script src="kendo/js/kendo.culture.zh-HK.min.js"></script>
     <script src="kendo/js/kendo.messages.zh-HK.js"></script>
     
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
     <!-- Include all compiled plugins (below), or include individual files as needed --> 
     <script src="js/bootstrap.min.js"></script> 
@@ -24,6 +25,7 @@
     <script src="js/util.js"></script>
     <script src="js/main.js"></script>
     <script src="lang/lang.js"></script>
+    
     
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -55,7 +57,7 @@
     <div class="navbar-top">
     <ul class="head-link">
     <li><a href="#"><figure><img src="images/icon-book.png" alt="" class="img-responsive"></figure></a></li>
-    <li><a href="#" id="menuheader5"></a></li>
+    <li><a href="#" id="menuheader8"></a></li>
     </ul>
     <ul class="head-link head-link-right" id="buttonul">
     <li><a href="#" id="toggle-list-view"><figure class="sm"><img src="images/icon-align.png" alt="" class="img-responsive"></figure></a></li>
@@ -118,13 +120,17 @@
 	<div class="container">
     	<h1 id="selectedworkday">&nbsp;</h1>
         <h1 class="title" id="shopName">&nbsp;</h1>
-        <h4 id="canceltexttitle1"></h4>
+        <h4 id="paymenttexttitle1"></h4>
         <div class="clearfix"></div>
-        <!-- start chart -->
+        <!-- start piechart -->
         <div class="chart-wrapper">
-           <div id="chart" style="width:100%; height: 260px"></div>
+           <div id="piechart"></div>
         </div>
-        <!-- end chart -->
+        <div style="height:10px;"></div>
+        <div class="chart-wrapper">
+           <div id="piechart2"></div>
+        </div>
+        <!-- end piechart -->
         <div class="table-responsive">
         	<table class="table table-condensed graph-data" id="amount-table">
             	<tbody>
@@ -145,7 +151,7 @@
 	<div class="container">
     	<h1 id="selectedworkday2">&nbsp;</h1>
         <h1 class="title" id="shopName2">&nbsp;</h1>
-        <h4 id="canceltexttitle2"></h4>
+        <h4 id="paymenttexttitle2"></h4>
         <div class="clearfix"></div>
         <div class="table-responsive">
         	<table id="mydataTable" class="table table-condensed" style="width:100%">
@@ -223,7 +229,7 @@ $( document ).ready(function() {
                     $('#shopName2').text(data[i].Name);
                 }
             });
-            
+
             console.log("thisShopID with cookies: "+thisShopId);
         }
         
@@ -240,10 +246,11 @@ $( document ).ready(function() {
     }
    );
     
+    var itemArr = [];
+    var itemArr2 = [];
+    var timeArr = [];
     var moneyArr = [];
-    var timeArr =  [];
-    var amtArr =  [];
-    var tableArr = [];
+    var amtArr = [];
     var formattedDatetime;
     var formattedcheckindatetime;
     var formattedcheckoutdatetime;
@@ -260,116 +267,101 @@ $( document ).ready(function() {
     var selectedworkdayDay;
     var selectedworkdayMonth;
     var selectedworkdayYear;
-    var tableDetailArr = [];
     var finalcheckindatetimeminute;
     var finalcheckoutdatetimeminute;
     var finalcheckindatetimehour;
     var finalcheckoutdatetimehour;
-    var emptytimeHourlyArr = getEmptyTimeHourlArr();
-    var cancelItemNameArr = [];
-    var cancelItemValueArr = [];
+    var emptytimeArr = getEmptyTimeArr();
+    var itemArrNo2 = [];
+    var itemArrName2 = [];
+    var itemArrValue2 = [];
+    var tableDetailArr = [];
+    var tableArr = [];
+    var ptymtdcount;
     
     $.ajax(
     {
       type: "GET",
-      url: "http://ewpos.io/Report/CancelItemsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
+      url: "http://ewpos.io/OtherReport/ReportSalesRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay(),
       dataType: 'jsonp',
       xhrFields: {
            withCredentials: true
       },
       crossDomain: true,
       success: function(data){
-          console.log("hourly data: "+data);
+          console.log("summary data: "+data);
           //update bottom table on dashboard
           
           selectedworkdayDay = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getDate();
           selectedworkdayMonth = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getMonth();
           selectedworkdayYear = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getFullYear();
           
-            selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
-            $("#selectedworkday").text(selectedworkdaystr);
-            $("#selectedworkday2").text(selectedworkdaystr);
-           
-           if(data.CancelItemDisplayGroupList == null)
+          selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
+          $("#selectedworkday").text(selectedworkdaystr);
+          $("#selectedworkday2").text(selectedworkdaystr);
+           console.log("RPT ar" + data.RptGeneralDetailList);
+           if(data.rptTurnoverMaster == null)
            {
-               maxMoney = 2000;
-               timeArr = emptytimeHourlyArr;
-               moneyArr = [0];
-               amtArr = [0];
-               
-               $("#nodata2").fadeIn(1500);
+               itemArr = [0];
+               $( "#nodata2" ).fadeIn(1500);
            }
           else{
               
-              if(data.CancelItemDisplayGroupList.length == 0){
-                      maxMoney = 2000;
-                      timeArr = emptytimeHourlyArr;
+              if(data.rptTurnoverMaster.RptTxSalesDetailCategoryList.length == 0){
+                      maxMoney = 8000;
+                      timeArr = emptytimeArr;
                       moneyArr = [0];
-                  
-                      $("#nodata").fadeIn(1500);
+                      $( "#nodata" ).fadeIn(1500);
               }
-              else {
-                      $.each(data.CancelItemDisplayGroupList, function(i, item) {
-                          var cancelItemDetailArr = {category: item.GroupName , val: item.GroupCount};
-                          cancelItemNameArr.push(item.GroupName);
-                          cancelItemValueArr.push(item.GroupCount);
-                      });
-                  
-                      $.each(data.TxSalesDetailLogList, function(i, item) {
-                          
-                          formattedcheckindatetime = new Date(parseInt(item.LogDateTime.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
-                          
-                          if(parseInt(formattedcheckindatetime.getMinutes()) <10 ){
-                              finalcheckindatetimeminute = "0"+formattedcheckindatetime.getMinutes();
-                          }
-                          else{
-                              finalcheckindatetimeminute = formattedcheckindatetime.getMinutes();
-                          }
-                          if(parseInt(formattedcheckindatetime.getHours()) <10 ){
-                              finalcheckindatetimehour = "0"+formattedcheckindatetime.getHours();
-                          }
-                          else{
-                              finalcheckindatetimehour = formattedcheckindatetime.getHours();
-                          }
-                          
-                          finalcheckindatetime = finalcheckindatetimehour+":"+finalcheckindatetimeminute;
-                          
-                          var tableDetailArr = [item.ReceiptNo , item.TableCode , finalcheckindatetime, item.ItemName, item.ResultSource, item.UserName];
-                          tableArr.push(tableDetailArr);
+              else{
+
+                      $.each(data.rptTurnoverMaster.RptTxPaymentPaidList, function(i, itm) {
+                            var itemDetailPaymentAmtArr = {category: itm.ItemName, value: itm.ItemValue};
+                            var itemDetailPaymentCountArr = {category: itm.ItemName, value: itm.ItemCount};
+                            itemArr.push(itemDetailPaymentAmtArr);
+                            itemArr2.push(itemDetailPaymentCountArr);
                       });
                       
+                      
+                      ptymtdcount = data.rptTurnoverMaster.RptTxPaymentPaidList.length;
+                      
+                      $.each(data.rptTurnoverMaster.RptTxPaymentPaidList, function(i, itm) {
+
+                          //create table view array
+                          tableDetailArr = [itm.ItemName , itm.ItemCount , "$"+kendo.format('{0:n}', itm.ItemValue)];
+                          tableArr.push(tableDetailArr);
+                      });
+
+                      createPieChart(itemArr , itemArr2 , ptymtdcount);
               }
-          }
-          
-          createChart(cancelItemNameArr, cancelItemValueArr);
-          
-          if(data.SelectedPeriodSumModelList != null){
-              $('#amount-table').printAmountTable(data.SelectedPeriodSumModelList);
-           }
+            }
           
           
-          //create jquery datatable
+          /*
+          if(data.rptTurnoverMaster.RptTxSalesDetailCategoryList.length > 0){
+              $('#amount-table').printAmountTable(data.resultReportTurnoverHeader , data.rptTurnoverMaster);
+           }*/
           
+          
+            //create jquery datatable payment
           $('#mydataTable').dataTable({
              "data": tableArr,
              "columns": [
-                { "title": invoiceno },
-                { "title": tableno },
-                { "title": timetext },
-                { "title": cancelnametext },
-                { "title": cancelreasontext },
-                { "title": cashierstaff}
+                { "title": ttmethod },
+                { "title": ttcount },
+                { "title": ttamount },
                 ],
               "paging": false,
               "bFilter": false,
               "info": false,
               "language": datatablelang
             });
+          
       },
       error: function (xhr) {
-             alert(xhr.responseText);
-      }
-    }
+             //alert(xhr.responseText);
+          }
+        }
          
     );
     
@@ -402,66 +394,65 @@ $( document ).ready(function() {
     });
 });
 
-(function($){
-    $.fn.extend({
-        printAmountTable: function(timesectiondata) {
-            
-            var thisumamount = 0;
-           
-            $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="total-wholeday">'+whodaytext+'</span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
-  
-            
-            
-            for (i = 0; i < timesectiondata.length; i++) { 
-                 $('#amount-table tr:last').after('<tr><td><span>'+timesectiondata[i].PeriodName+'</span></td><td><div id="timesectionspan'+i+'">&nbsp;</div></td></tr>');
-                 $('#timesectionspan'+i).text(timesectiondata[i].SumAmount);
-                
-                thisumamount = thisumamount + parseInt(timesectiondata[i].SumAmount);
-             }
-            
-            $("#WholeDaySum").text(thisumamount);
-            return;
-        }
-    });
-})(jQuery);
-
-    
-function createChart(cancelItemNameArr, cancelItemValueArr) 
+function createPieChart(dataArr, dataArr2 , ptymtdcount)
 {
-    $("#chart").kendoChart({
-                legend: {
-                    position: "top",
-                    visible: false,
-                },
-                series: [{
-                    type: "column",
-                    data: cancelItemValueArr,
-                    stack: true,
-                    name: "amt",
-                    color: "#efc028",
-                    tooltip: {
-                        visible: true,
-                        template: "#= category #: #= value #"
-                    },
-                }],
-                valueAxes: [{
-                    name: "amt",
-                    min: 0,
-                    majorUnit: 1,
-                    majorGridLines: {
-                        visible: false
-                    }
-                }],
-                categoryAxis: {
-                    categories: cancelItemNameArr,
-                    labels: {
-                        rotation: -90,
-                        step: 1,
-                        skip: 0
-                    },
-                },
-                
-            });
+   $("#piechart").kendoChart({
+        title: paymentmethodamt,
+        legend: {
+           position: "top",
+           visible: false,
+        },
+        seriesDefaults: {
+            labels: {
+                template: "#=category #:\n$#= kendo.format('{0:n}', value) # \n (#= kendo.format('{0:P}', percentage)#)",
+                position: "outsideEnd",
+                align: "circle",
+                distance: 20,
+                visible: true,
+                background: "transparent",
+                border: {
+                    width: 0
+                  }
+            }
+        },
+        chartArea: {
+            height: 300,
+        },
+        series: [{
+            type: "pie",
+            padding: getPieChartPadding(ptymtdcount),
+            data: dataArr,
+        }],
+    });
+    
+    $("#piechart2").kendoChart({
+        title: paymentmethodcount,
+        legend: {
+           position: "top",
+           visible: false,
+        },
+        seriesDefaults: {
+            labels: {
+                template: "#=category #:#= value # \n (#= kendo.format('{0:P}', percentage)#)",
+                position: "outsideEnd",
+                align: "circle",
+                distance: 20,
+                visible: true,
+                background: "transparent",
+                border: {
+                    width: 0
+                  }
+            }
+        },
+        chartArea: {
+            height: 300,
+        },
+        series: [{
+            type: "pie",
+            padding: getPieChartPadding(ptymtdcount),
+            data: dataArr2
+        }],
+    });
 }
 </script>
 </body>
