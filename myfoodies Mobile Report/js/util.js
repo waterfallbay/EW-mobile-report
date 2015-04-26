@@ -222,3 +222,32 @@ function getPieChartPadding(num)
     
     return padding;
 }
+
+function jsonDatetimetoDataTableTime(datetimestr)
+{    
+    var formattedcheckoutdatetime;
+    var finalcheckoutdatetimeminute;
+    var finalcheckoutdatetimehour;
+    var finalcheckoutdatetime;
+    
+      formattedcheckoutdatetime = new Date(parseInt(datetimestr.replace("/Date(", "").replace(")/",""), 10)- 1000*3600*8);
+    
+      if(parseInt(formattedcheckoutdatetime.getMinutes()) <10 ){
+          finalcheckoutdatetimeminute = "0"+formattedcheckoutdatetime.getMinutes();
+      }
+      else{
+
+          finalcheckoutdatetimeminute = formattedcheckoutdatetime.getMinutes();
+      }
+      if(parseInt(formattedcheckoutdatetime.getHours()) <10 ){
+          finalcheckoutdatetimehour = "0"+formattedcheckoutdatetime.getHours();
+      }
+      else{
+
+          finalcheckoutdatetimehour = formattedcheckoutdatetime.getHours();
+      }
+    finalcheckoutdatetime = finalcheckoutdatetimehour+":"+finalcheckoutdatetimeminute;
+    
+    return finalcheckoutdatetime;
+    
+}

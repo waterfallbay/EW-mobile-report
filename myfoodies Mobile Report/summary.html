@@ -524,17 +524,19 @@ $( document ).ready(function() {
             
             $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="hourly-table-section-total"></span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-discount"></span></td><td><div id="table-discount-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span id="hourly-table-memberdiscount"></span></td><td><div id="table-memberdiscount-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-servicecharge"></span></td><td><div id="table-servicecharge-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-decimal"></span></td><td><div id="table-decimal-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-net"></font> <font size="1">('+thidata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-unbilled"></font> <font size="1">('+thidata.UncloseTxCount+')</font></span></td><td><div id="table-unbilled-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span><font id="cancelled-item">'+cancelleditem+'</font> <font size="1">('+thatdata.RptCancelTxDetail.ItemCount+')</font></span></td><td><div id="cancelled-item-value"></div></td></tr>');
-             $("#amount-table tr:last").after('<tr><td><span><font id="cancelled-bill">'+cancelledbill+'</font> <font size="1">('+thatdata.RptCancelTxHeader.ItemCount+')</font></span></td><td><div id="cancelled-bill-value"></div></td></tr>');
+            $("#amount-table tr:last").after('<tr><td><span><font id="cancelled-bill">'+cancelledbill+'</font> <font size="1">('+thatdata.RptCancelTxHeader.ItemCount+')</font></span></td><td><div id="cancelled-bill-value"></div></td></tr>');
             
             
             getLangText(window.localStorage.getItem('storagelang'));
             $("#WholeDaySum").text(thidata.DayTurnover).formatCurrency();
             $("#table-discount-value").text(thidata.DayDiscount).formatCurrency();
+            $("#table-memberdiscount-value").text(thidata.DayMemberDiscount).formatCurrency();
             console.log("Discount:" + thidata.DayDiscount);
             $("#table-servicecharge-value").text(thidata.DayServiceFee).formatCurrency();
             $("#table-decimal-value").text(thidata.DayRounding).formatCurrency();

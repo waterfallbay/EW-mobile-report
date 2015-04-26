@@ -147,8 +147,15 @@
         <h1 class="title" id="shopName2">&nbsp;</h1>
         <h4 id="discounttexttitle2"></h4>
         <div class="clearfix"></div>
+        <div id="generaldiscountext">一般折扣</div>
         <div class="table-responsive">
         	<table id="mydataTable" class="table table-condensed" style="width:100%">
+            	
+            </table>
+        </div>
+        <div id="memberdiscounttext">會員折扣</div>
+        <div class="table-responsive">
+        	<table id="mydataTableCat" class="table table-condensed" style="width:100%">
             	
             </table>
         </div>
@@ -268,6 +275,9 @@ $( document ).ready(function() {
     var emptytimeHourlyArr = getEmptyTimeHourlArr();
     var discountItemNameArr = [discount , memberdiscount];
     var discountItemValueArr = [];
+    var tableMemberArr = [];
+    var tableMemberDetailArr = [];
+    var tableArr2 = [];
     
     $.ajax(
     {
@@ -312,16 +322,26 @@ $( document ).ready(function() {
                       //push day discount
                       discountItemValueArr.push(data.resultReportTurnoverHeader.DayDiscount);
                       //push member discount
-                      discountItemValueArr.push(0);
-                      if (data.RptGeneralDetailList.length > 0)
+                      discountItemValueArr.push(data.resultReportTurnoverHeader.DayMemberDiscount);
+                      
+                      if (data.DiscountTxSalesHeaderDtoList.length > 0)
                       {
-                          $.each(data.RptGeneralDetailList, function(i, item) {
-
-                              var tableDetailArr = [item.ItemCode , "$"+kendo.format('{0:n}', item.ItemValue)];
+                          $.each(data.DiscountTxSalesHeaderDtoList, function(i, item) {
+                              var outtime = jsonDatetimetoDataTableTime(item.CashierDatetime);
+                              var tableDetailArr = [item.TxSalesHeaderId , item.DiscountName , item.DiscountByUserName , outtime , "$"+kendo.format('{0:n}', item.AmountTotal) , "$"+kendo.format('{0:n}', item.AmountDiscount)];
                               tableArr.push(tableDetailArr);
                           });
                       }
-                      
+                      if (data.DiscountMemberTxLogDtoList.length > 0)
+                      {
+                          $.each(data.DiscountMemberTxLogDtoList, function(i, item) {
+                              var outtime = jsonDatetimetoDataTableTime(item.CashierDatetime);
+                              var tableMemberArr = [item.TxSalesHeaderId , item.MemberTypeName , item.MemberName + "("+item.MemberDetailId+")" , outtime , "$"+kendo.format('{0:n}', item.AmountTotal) , "$"+kendo.format('{0:n}', item.DeductAmount )  , item.DiscountRate];
+                              tableArr2.push(tableMemberArr);
+                          });
+                      }
+                  
+                  
               }
           }
           
@@ -338,13 +358,35 @@ $( document ).ready(function() {
              "data": tableArr,
              "columns": [
                 { "title": invoiceno },
+                { "title": itemname },
+                { "title": cashierstaff },
+                { "title": outtime },
                 { "title": ttamount },
+                { "title": discount},
                 ],
               "paging": false,
               "bFilter": false,
               "info": false,
               "language": datatablelang
             });
+          
+          $('#mydataTableCat').dataTable({
+             "data": tableArr2,
+             "columns": [
+                { "title": invoiceno },
+                { "title": itemname },
+                { "title": membername },
+                { "title": outtime },
+                { "title": ttamount },
+                { "title": discount},
+                { "title": rate},
+                ],
+              "paging": false,
+              "bFilter": false,
+              "info": false,
+              "language": datatablelang
+            });
+          
       },
       error: function (xhr) {
              alert(xhr.responseText);
@@ -388,6 +430,7 @@ $( document ).ready(function() {
             
             $("td#emptytd").parent().replaceWith('<tr><td><span class="large" id="hourly-table-section-total"></span></td><td><span class="large large-txt" id="WholeDaySum"></span></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-discount"></span></td><td><div id="table-discount-value"></div></td></tr>');
+             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-memberdiscount"></span></td><td><div id="table-memberdiscount-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-servicecharge"></span></td><td><div id="table-servicecharge-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span id="hourly-table-decimal"></span></td><td><div id="table-decimal-value"></div></td></tr>');
             $("#amount-table tr:last").after('<tr><td><span><font id="hourly-table-net"></font> <font size="1">('+thisdata.DayNetTurnoverTxCount+')</font></span></td><td><div id="table-net-value"></div></td></tr>');
@@ -395,6 +438,7 @@ $( document ).ready(function() {
             getLangText(window.localStorage.getItem('storagelang'));
             $("#WholeDaySum").text(thisdata.DayTurnover).formatCurrency();
             $("#table-discount-value").text(thisdata.DayDiscount).formatCurrency();
+            $("#table-memberdiscount-value").text(thisdata.DayMemberDiscount).formatCurrency();
             console.log("Discount:" + thisdata.DayDiscount);
             $("#table-servicecharge-value").text(thisdata.DayServiceFee).formatCurrency();
             $("#table-decimal-value").text(thisdata.DayRounding).formatCurrency();

@@ -70,6 +70,9 @@ var zh = {
     paymentmethodcount: "按交易次數",
     ttmethod: "辦法",
     ttcount: "次數",
+    membername: "會員",
+    rate: "折扣率",
+    generaldiscountext: "一般折扣",
     menu : {
         AllTransactions : "總銷售報表",
         CancelItems : "取消項目報表",
@@ -166,6 +169,9 @@ var en = {
     paymentmethodcount: "By Count",
     ttmethod: "Method",
     ttcount: "Count",
+    membername: "Mem. Name",
+    rate: "rate",
+    generaldiscountext: "Discount",
     menu : {
         AllTransactions : "All Day Sales",
         CancelItems : "Cancelled Item Log",
@@ -224,6 +230,8 @@ var itemtext;
 var timetext;
 var cancelnametext;
 var cancelreasontext;
+var membername;
+var generaldiscountext;
 
 function getLangText(lang){
 
@@ -341,6 +349,10 @@ function getLangText(lang){
     //Discount Log
     memberdiscount = currentlang.memberdiscount;
     discount = currentlang.discount;
+    membername = currentlang.membername;
+    rate = currentlang.rate;
+    $('#memberdiscounttext').html(currentlang.memberdiscount);
+    $('#generaldiscountext').html(currentlang.generaldiscountext); 
     
     //Payment Methods
     paymentmethodamt = currentlang.paymentmethodamt;
