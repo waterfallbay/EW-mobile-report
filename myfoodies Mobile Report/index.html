@@ -92,7 +92,7 @@ $(document).ready(function(){
     
     
 jQuery(document).submit(function(e){
-	var msg = "login error: error message";
+	var msg = loginerror;
     var form = $(e.target);
     if(form.is("#loginform")){
         e.preventDefault();
@@ -129,6 +129,10 @@ jQuery(document).submit(function(e){
 					$("#errortext").html(msg);
 				}
             },
+            timeout: 10000,
+            error: function (xhr) {
+             $("#errortext").html(msgnoconnection);
+            }
         });
     }
     

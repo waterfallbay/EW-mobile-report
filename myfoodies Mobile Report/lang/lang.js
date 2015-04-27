@@ -1,4 +1,5 @@
 var zh = {
+    connectionerror: "未能連接務器，請檢查你的網絡連線！",
     dashboardtexttitle : "一日營業總結",
     hourlytablesectiontotal : "營業額",
     hourlytablediscount : "- 折扣",
@@ -98,6 +99,7 @@ var zh = {
 };
 
 var en = {
+    connectionerror: "Cannot connect to server, please check your internet connection!",
     dashboardtexttitle : "All Day Sales",
     canceltexttitle: "Cancelled Item",
     chasetexttitle: "Await Order",
@@ -232,6 +234,7 @@ var cancelnametext;
 var cancelreasontext;
 var membername;
 var generaldiscountext;
+var connectionerror;
 
 function getLangText(lang){
 
@@ -301,7 +304,8 @@ function getLangText(lang){
     ttamount = currentlang.ttamount;
     cashierstaff = currentlang.cashierstaff;
     chartsalestext = currentlang.chartsalestext;
-
+    connectionerror = currentlang.connectionerror;
+    
     // hourly page
     $('#hourly-table-section-total').html(currentlang.hourlytablesectiontotal);
     $('#hourly-table-discount').html(currentlang.hourlytablediscount);
