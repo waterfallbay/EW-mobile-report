@@ -6,8 +6,8 @@
   "DisplayName": "myfoodies",
   "Author": "Everyware Limtied",
   "Description": "myfoodies Mobile Report",
-  "BundleVersion": "2.0",
-  "AndroidVersionCode": "2",
+  "BundleVersion": "2.81",
+  "AndroidVersionCode": "28",
   "iOSDeviceFamily": [
     "1",
     "2"
