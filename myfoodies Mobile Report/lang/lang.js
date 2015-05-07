@@ -64,6 +64,7 @@ var zh = {
     discount: "折扣",
     memberdiscount: "會員折扣",
     timetext: "時間",
+    trancount: "宗數",
     cancelnametext: "項目",
     cancelreasontext: "原因",
     chasenocounttext: "次數",
@@ -137,6 +138,7 @@ var en = {
     itemname: "Name",
     itemcode: "Code",
     itemcount: "Qty.",
+    trancount: "Count",
     cashierstaff: "Staff",
     cashier: "Cashier",
     todaytext: "Today",
@@ -199,6 +201,7 @@ var en = {
     
 };
 
+var trancount;
 var currentlang;
 var loginerror;
 var yeartext;
@@ -318,6 +321,7 @@ function getLangText(lang){
     timesection = currentlang.timesection;
     chartnotrans = currentlang.chartnotrans;
     charthourlyamt = currentlang.charthourlyamt;
+    trancount = currentlang.trancount;
     
     //byitem page
     salesitembyamttext = currentlang.salesitembyamt;
