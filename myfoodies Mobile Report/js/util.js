@@ -8,12 +8,22 @@ function getCurrentShopID()
 {
     currentShopID = localStorage.getItem('storageshop');
     
+    if (currentShopID === null){
+        
+        currentShopID = "";
+    }
+    
     return currentShopID;
 }
     
 function getSelectedWorkDay()
 {
     currentSelectedWorkday = localStorage.getItem('storageworkday');
+    
+     if (currentSelectedWorkday === null){
+        
+        currentSelectedWorkday = "";
+    }
     
     return currentSelectedWorkday;
 }
@@ -161,7 +171,30 @@ function jsMonthtoNumbermonth(num){
 
 function logout()
 {
-    window.location.replace("index.html");   
+     $.ajax(
+    { 
+      type: "GET",
+      url: "http://ewpos.io/Account/LogOffRest/",
+      dataType: 'jsonp',
+      xhrFields: {
+           withCredentials: true
+      },
+      crossDomain: true,
+      success: function(data){
+          localStorage.removeItem('storageshop');
+          localStorage.removeItem('storageworkday');
+          console.log ("selected workday: "+localStorage.getItem('storageworkday'))
+          window.location.replace("index.html");
+
+      },
+      error: function (xhr) {
+          console.log("logout error");
+          window.location.replace("index.html");
+      }
+    });
+    
+    
+    
 }
 
 function forgeteverything()

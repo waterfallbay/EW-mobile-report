@@ -3,18 +3,18 @@
   "ProjectGuid": "85eab78e-aa01-4516-bf71-3d7653d74677",
   "projectVersion": 1,
   "AppIdentifier": "com.everyware.pos",
-  "DisplayName": "myFoodies™ HQ",
+  "DisplayName": "canyum™ HQ ",
   "Author": "Everyware Limtied",
-  "Description": "myfoodies Mobile Report",
-  "BundleVersion": "2.82",
-  "AndroidVersionCode": "29",
+  "Description": "canyum Mobile Report",
+  "BundleVersion": "2.83",
+  "AndroidVersionCode": "30",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
   "iOSBackgroundMode": [],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "3.5.0",
+  "FrameworkVersion": "3.8.0",
   "AndroidPermissions": [
     "android.permission.INTERNET"
   ],
@@ -22,8 +22,8 @@
     "Portrait",
     "Landscape"
   ],
-  "AndroidHardwareAcceleration": "True",
-  "iOSStatusBarStyle": "Default",
+  "AndroidHardwareAcceleration": "true",
+  "iOSStatusBarStyle": "BlackTranslucent",
   "Framework": "Cordova",
   "WP8TileTitle": "",
   "WP8Publisher": "Everyware Limited",
@@ -45,6 +45,7 @@
     "org.apache.cordova.inappbrowser",
     "org.apache.cordova.media",
     "org.apache.cordova.network-information",
-    "org.apache.cordova.splashscreen"
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar"
   ]
 }

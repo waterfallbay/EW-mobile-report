@@ -184,6 +184,7 @@ var firsttimeenter;
 var newshopid;
 
 $( document ).ready(function() {
+
     
     $('#dataTable').DataTable();
     
@@ -194,10 +195,11 @@ $( document ).ready(function() {
     
     currenthtmlfile = getCurrentHTMLFile();
     console.log("currenthtmlfile: "+currenthtmlfile);
+
     
     $( "#list-view-section" ).hide();
     $( "#toggle-chart-view" ).hide();
-    
+    console.log("entering ajax");
     $.ajax(
     { 
       type: "GET",
@@ -208,11 +210,13 @@ $( document ).ready(function() {
       },
       crossDomain: true,
       success: function(data){
+        console.log("shop list data:" + data);
         if (localStorage.getItem('storageshop') === null){
             thisShopId = data[0].ShopId;
             localStorage.setItem('storageshop' , thisShopId);
             $('#shopName').text(data[0].Name);
             $('#shopName2').text(data[0].Name);
+            console.log ("ajax success");
         }
         else{
             thisShopId = localStorage.getItem('storageshop');
@@ -225,6 +229,7 @@ $( document ).ready(function() {
             });
             
             console.log("thisShopID with cookies: "+thisShopId);
+            console.log ("thisShopID with cookies: "+thisShopId);
         }
         
         
@@ -235,7 +240,7 @@ $( document ).ready(function() {
             
       },
       error: function (xhr) {
-             alert(xhr.responseText);
+             console.log("first ajax error");
       }
     }
    );
@@ -265,7 +270,8 @@ $( document ).ready(function() {
     var finalcheckindatetimehour;
     var finalcheckoutdatetimehour;
     var emptytimeArr = getEmptyTimeArr();
-    
+      
+    console.log ("http://ewpos.io/Report/AllTransactionsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay());
     $.ajax(
     {
       type: "GET",
@@ -275,11 +281,13 @@ $( document ).ready(function() {
            withCredentials: true
       },
       crossDomain: true,
-      success: function(data){
-          console.log("http://ewpos.io/Report/AllTransactionsRest?shop="+getCurrentShopID()+"&SelectedWorkday="+getSelectedWorkDay())
-          console.log("final ajax shopID: "+thisShopId);
-          //update bottom table on dashboard
+      success: function(data, tst, xhr){
+          console.log ("2nd ajax success");
           
+          console.log("http://ewpos.io/Report/AllTransactionsRest?shop=47&SelectedWorkday=19/05/2015");
+          console.log("my data: "+data);
+          //update bottom table on dashboard
+        
           selectedworkdayDay = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getDate();
           selectedworkdayMonth = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getMonth();
           selectedworkdayYear = new Date(parseInt(data.SelectedWorkday.replace("/Date(", "").replace(")/",""), 10)).getFullYear();
@@ -287,7 +295,7 @@ $( document ).ready(function() {
            selectedworkdaystr = selectedworkdayYear+yeartext+jsMonthtoNumbermonth(selectedworkdayMonth)+monthtext+selectedworkdayDay+daytext;
            $("#selectedworkday").text(selectedworkdaystr);
            $("#selectedworkday2").text(selectedworkdaystr);
-         
+           console.log ("before if");
            if(data.SelectedTxSalesHeaderList == null)
            {
                maxMoney = 8000;
@@ -295,8 +303,11 @@ $( document ).ready(function() {
                moneyArr = [0];
                
                $("#nodata2").fadeIn(1500);
+            
+              console.log ("SelectedTxSalesHeaderList is null");
            }
           else{
+               console.log ("SelectedTxSalesHeaderList is not null");
               
               if(data.SelectedTxSalesHeaderList.length == 0){
                       maxMoney = 8000;
@@ -304,9 +315,13 @@ $( document ).ready(function() {
                       moneyArr = [0];
                       
                       $("#nodata").fadeIn(1500);
+                    
+                    console.log ("SelectedTxSalesHeaderList length is zero");
+                   
               }
               else {
                           console.log ("length: " + data.SelectedTxSalesHeaderList[0]);
+                             console.log ("SelectedTxSalesHeaderList is retrieving");
                           maxMoney = parseInt(data.SelectedTxSalesHeaderList[data.SelectedTxSalesHeaderList.length-1].TotalAmountRunningSum+500);
 
                           $.each(data.SelectedTxSalesHeaderList, function(i, item) {
@@ -363,11 +378,13 @@ $( document ).ready(function() {
                               minute = formattedDatetime.getMinutes();
 
                               timeArr.push(new Date(year+"/"+month+"/"+day+" "+hour+":"+minute+":00"));
+                                console.log ("SelectedTxSalesHeaderList is retrieved successfully");
                            });
               }
           }
-          
+          console.log ("start create chart");
           createChart(moneyArr, timeArr, maxMoney);
+          console.log ("end create chart");
           
           if(data.SelectedTxSalesHeaderList != null){
               $('#amount-table').printAmountTable(data.TotalSum.SumAmount, data.SelectedPeriodSumModelList);
@@ -392,8 +409,13 @@ $( document ).ready(function() {
               "language": datatablelang
             });
       },
-      error: function (xhr) {
-             alert(xhr.responseText);
+      error: function (xhr,textStatus,err) {
+            console.log("Data"+data);
+            console.log("readyState: " + xhr.readyState);
+            console.log("responseText: "+ xhr.responseText);
+            console.log("status: " + xhr.status);
+            console.log("text status: " + textStatus);
+            console.log("error: " + err);
       }
     }
          
@@ -437,7 +459,7 @@ $( document ).ready(function() {
   
             $("#WholeDaySum").text(thisumamount).formatCurrency();
             
-            //alert(timesectiondata.length);
+            //console.log(timesectiondata.length);
             for (i = 0; i < timesectiondata.length; i++) { 
                  $('#amount-table tr:last').after('<tr><td><span>'+timesectiondata[i].PeriodName+'</span></td><td><div id="timesectionspan'+i+'">&nbsp;</div></td></tr>');
                  $('#timesectionspan'+i).text(timesectiondata[i].SumAmount).formatCurrency();
